@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Доступные вопросы</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <ul>
+        {% for question in questions %}
+            <li>{{ question.text }}</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

@@ -1,0 +1,6 @@
+__pycache__/
+SurveyDesigner/__pycache__/*
+users/__pycache__/*
+polls/__pycache__/*
+polls/migrations/*
+SurveyDesigner/.env

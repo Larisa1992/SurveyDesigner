@@ -1,0 +1,52 @@
+@font-face {
+    src: url('../fonts/LibreBaskerville-Regular.ttf');
+    font-family: 'LibreBaskerville Regular';
+}
+
+body {
+    margin-top: 10px;
+    margin-bottom: 10px;
+	background: rgba(115, 147, 119, 0.46);
+}
+
+.my-text {
+    font-family:'LibreBaskerville Regular';
+}
+
+main{
+    min-height: calc(100vh - 235px);
+    margin-left: auto;
+    margin-right: auto;
+    width: 1400px;
+    background: rgba(255, 255, 255, 0.62);
+}
+
+.main-content{  
+    display: grid;
+    grid-template-columns:  25% 25% 25% 25%;
+    grid-template-rows: 50% 50%;
+
+}
+
+.main-content-empty {
+    position: relative;
+    margin-top: 20vw;
+    text-align: center;
+
+    font-family:'LibreBaskerville Regular';
+    font-size: 3em;
+}
+
+.home {
+    text-align: center;
+}
+
+img.fit {
+    margin: 10px 10px 10px 0px;
+    width: 300px;
+    height: 300px;
+    border-radius:5px;
+    object-fit: cover;
+}
+
+

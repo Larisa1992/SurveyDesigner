@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Доступные вопросы</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <ul>
+        {% for question in object_list %}
+            <li>{{ question.text }}
+                <a class="text-info" href="{% url 'question_edit' question.id %}">Редактировать</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
+

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Список опросов</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <ol>
+        {% for poll in poll_list %}
+        <li>
+            <a href="{% url 'poll_questions' poll.id %}" title="Просмотреть вопросы">
+                {{ poll.title }}</a>
+            <input type="submit" value="Детальнее" class='btn btn-primary btn-sm'>
+        </li>
+        {% endfor %}
+    </ol>
+{% endblock content %}

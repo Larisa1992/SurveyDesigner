@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block page_header %}
+    Welcome
+{% endblock %}
+{% block content %}
+    <h1>Welcome {{ new_user.first_name }}!</h1>
+    <p>Вы успешно зарегистрированы.
+    Теперь вы можете <a href="{% url 'users:login' %}">войти</a>.</p>
+{% endblock %}

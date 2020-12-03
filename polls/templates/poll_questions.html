@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Редактирование опроса</h2>
+{% endblock page_header %}
+
+{% block content %}
+{{ message_poll }}
+<form action="{% url 'poll_questions' poll.id %}" method="post">
+    {% csrf_token %}
+    Дата публикации: {{ poll.publicationDate|date:'d-m-Y H:i:s' }}
+    <p>Заголовок: <input type="text" name="title"  value="{{ poll.title }}"></p>
+    <p>Описание: <textarea name="description" cols="50" rows="7">{{ poll.description }}</textarea></p>
+    Дата публикации: {{ poll.publicationDate|date:'d-m-Y H:i:s' }}
+    <p>Поменять дату публикации: <input type="datetime-local" name="publicationDate" ></p>
+    <p>Максимальное время прохождения опроса (мин.)<input type="number" name="timer"  value="{{ poll.timer }}" required></p>
+    <input type="hidden" name="poll_id" id="poll_id" value="{{ poll.id }}">
+    <input type="submit" name="btn" value="Сохранить и продолжить" class='btn btn-primary btn-sm'>
+</form>
+<br>
+<h4>Редактирование баллов за вопрос</h4>
+<ol>
+    {% for qp in gp_list %}
+        <li>
+            {% csrf_token %}
+            <form action="{% url 'poll_questions' qp.poll_id %}" method="post" >
+                {% csrf_token %}
+                {{ qp.question }}
+                <input type="number" name="score" id="score" value="{{ qp.score }}" placeholder="Введите количество баллов за верный ответ">
+                <input type="hidden" name="rowid" id="rowid" value="{{ qp.id }}">
+                <input type="hidden" name="poll_id" id="poll_id" value="{{ qp.poll_id }}">
+                <input type="submit" name="btn" value="Сохранить и продолжить" class='btn btn-primary btn-sm'>
+            </form>
+        </li>
+    {% endfor %}
+</ol>
+
+{% endblock content %}
