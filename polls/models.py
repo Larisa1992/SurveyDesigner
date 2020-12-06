@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # типы вопросов
 TYPE_Q = ((1, 'Radio'), (2, 'Checkbox'),)
@@ -41,6 +42,9 @@ class QuestionInPoll(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.SET_NULL, null=True, verbose_name="Опрос")
     score = models.SmallIntegerField(null=True, verbose_name="Количество баллов")
     
+    def __str__(self):
+        return f'Вопрос: "{str(self.question)}" опроса "{self.poll}"'
+
     # def get_absolute_url(self):
     #     return f'/poll_questions/{self.pk}/'
 
@@ -52,3 +56,14 @@ class Answer(models.Model):
 
     def __str__(self):
         return f'{str(self.rightFlg)} {self.textAnswer}'
+
+class AnswerUser(models.Model):
+    """Ответы пользователя"""
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=("Пользователь"))
+    questionPoll = models.ForeignKey(QuestionInPoll, on_delete=models.CASCADE, verbose_name=("Вопрос из опроса"))
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=("Вопрос")) #для вывода в __str__
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, verbose_name=("Ответ"))
+    score = models.SmallIntegerField(null=True, verbose_name="Количество баллов")
+
+    def __str__(self):
+        return f'{self.owner} {self.question} {self.answer} '

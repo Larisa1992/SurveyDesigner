@@ -9,12 +9,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
 # import requests
 # timezone.now
-from polls.models import Question, Poll, Answer, QuestionInPoll
+from polls.models import Question, Poll, Answer, QuestionInPoll, AnswerUser
 from polls.forms import QuestionForm, QuestionEditForm, AnswerForm, QuestionInPollForm
 
 def index(request):
     return render(request, 'index.html')
 
+# @login_required
 class QuestionList(ListView):
     model = Question
     # имя переменной, в которой хранится список объектов для отображения
@@ -24,6 +25,7 @@ class QuestionList(ListView):
     template_name = "question_user_list.html"
 
 # список постов (для пункта 4)
+# @login_required
 class PollList(ListView):  
     model = Poll
     context_object_name='poll_list'
@@ -139,12 +141,18 @@ AnswerFormSet = modelformset_factory(Answer, form=AnswerForm, can_order=True, ca
 # Answer.objects.filter(question=_id)
 def question_answer_create(request, _id):
     qObj = Question.objects.get(id=_id)
-    answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer, 'rightFlg': obj.rightFlg} for obj in Answer.objects.filter(question=_id)]
+    # answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer, 'rightFlg': obj.rightFlg} for obj in Answer.objects.filter(question=_id)]
+    # внешний ключ фильтруем по объекту, а не по ссылке
+    answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer, 'rightFlg': obj.rightFlg} for obj in Answer.objects.filter(question=qObj)]
+    print(qObj)
+    print(_id)
+    print(answer_list)
     if request.method == 'POST':
-        answer_formset = AnswerFormSet(request.POST, request.FILES, prefix='answer', queryset=Answer.objects.filter(question=_id))
+        answer_formset = AnswerFormSet(request.POST, request.FILES, prefix='answer', queryset=Answer.objects.filter(question=qObj))
         # answer_formset = AnswerFormSet(request.POST, request.FILES, prefix='answer')
         # answer_formset = AnswerFormSet(request.POST, request.FILES, prefix='answer', initial= [{'question': _id}, {'question': _id}, {'question': _id}, {'question': _id}])
         form = QuestionEditForm(instance=qObj, data = request.POST)
+
         if answer_formset.is_valid() and form.is_valid():
             answer_formset.save(commit=False)
             for ans in answer_formset.new_objects:
@@ -161,7 +169,7 @@ def question_answer_create(request, _id):
                 # rubric = form.save(coramit=False)
                 # rubric.order = form.cleaned_data[ORDERING_FIELD_NAME]
             # for answer_form in answer_formset.changed_objects:
-            #     answer_form.save()
+                answer_form.save()
             form.save()
             return HttpResponseRedirect(reverse_lazy('q_list'))
         else:
@@ -171,7 +179,71 @@ def question_answer_create(request, _id):
         # answer_formset = AnswerFormSet(prefix='answer', initial=list(answerSet))
         # answer_list=[ {'question': obj.question, 'textAnswer': obj.textAnswer, 'rightFlg': obj.rightFlg} for obj in Answer.objects.filter(question=_id)]
         # print(answer_list)
-        answer_formset = AnswerFormSet(prefix='answer', initial=answer_list)
+        print(answer_list)
+        # answer_formset = AnswerFormSet(prefix='answer', initial=answer_list)
+        answer_formset = AnswerFormSet(prefix='answer', queryset=Answer.objects.filter(question=qObj), initial = [{'question': qObj}])
         # answer_formset = AnswerFormSet(prefix='answer', initial= [{'question': _id}, {'question': _id}, {'question': _id}, {'question': _id}])
         form = QuestionEditForm(instance=qObj)
     return render(request, 'question_answer_create.html', {'qObj': qObj, 'question_form' : form, 'answer_formset': answer_formset})
+
+
+def poll_start(request, poll_id):
+    """ Страница прохождения опроса для пользователя """
+    cur_poll = Poll.objects.get(id=poll_id)
+    # подтягиваем данные по внешнему ключу question
+    questions = QuestionInPoll.objects.filter(poll=poll_id).select_related('question')
+    message = ''
+    for q in questions:
+        print(q.question.text)
+        for ans in q.question.answer_set.all():
+            print(ans.textAnswer, ans.rightFlg)
+    if request.method == 'POST':
+        print(request.POST, type(request.POST))
+        # print('201' , request.POST['ans-check'], type(request.POST['ans-check']), int(request.POST['ans-check']))
+        # работает, выводит все атрибуты
+        # ans_check = request.POST.lists()
+        # for ans in ans_check:
+        #     print(ans)
+        set_ans = set(request.POST.getlist('ans-check')) # ответы пользователя
+        set_true_ans = set(request.POST.getlist('true-ans-id')) # правильные ответы
+        print('getlist', set_ans, set_true_ans)
+
+        # c_score = request.POST['score'] if set(request.POST['true-ans-id'])==set(request.POST['ans-check']) else 0
+        c_score = request.POST['score'] if set_ans == set_true_ans else 0
+        print(c_score, type(c_score))
+        c_qInPoll =QuestionInPoll.objects.get(id=request.POST['q-in-p'])
+
+        if 'q_id' in request.POST:
+            c_question = Question.objects.get(id=request.POST['q_id'])
+        else:
+            None
+        print(c_question)
+        # определяем количество заработанных баллов: если все правильные ответы отмечены, то заработали score
+        # print(list(request.POST['ans-check']))
+        # c_answer= Answer.objects.get(id=request.POST['ans-check'])
+
+        # удаляем предыдущий ответ пользователя
+        answer_db = AnswerUser.objects.filter(owner = request.user, questionPoll= c_qInPoll) 
+        if (answer_db.exists()):
+            answer_db.delete()
+            message = 'Ответ успешно обновлен'
+            print('delete all answer')
+        if len(set_ans)>0 and c_question:
+            for tans in set_ans:
+                tans = int(tans)
+                c_answer = Answer.objects.get(id=tans) # ответ пользователя
+                c_ansUser=AnswerUser.objects.create(owner = request.user, questionPoll= c_qInPoll, answer=c_answer, score=int(c_score), question=c_question)
+                c_ansUser.save()
+                print('Ответы ппользователя успешно сохранены ', c_ansUser.id)
+                message = 'Ответ успешно сохранен'
+        else:
+            message = 'не выбран вариант ответа'
+            print('не выбран вариант ответа')
+            # if tans in request.POST['ans-check']:
+            #     c_score = request.POST['score']
+            # else:
+            #     c_score = 0
+    # qObj = QuestionInPoll.objects.filter(id=poll_id)
+    # answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer, 'rightFlg': obj.rightFlg} for obj in Answer.objects.filter(question=_id)]
+    context = {'questions': questions, 'poll_id': poll_id, 'message': message}
+    return render(request, 'poll_start.html', context)

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.views.main import ChangeList
 
-from polls.models import Poll, Question, Answer, QuestionInPoll
+from polls.models import Poll, Question, Answer, QuestionInPoll, AnswerUser
 from polls.forms import PollQuestionChangeListForm
 
 @admin.register(Poll)
@@ -14,12 +14,16 @@ class QuestionAdmin(admin.ModelAdmin):
     autocomplete_fieids = ('polls',)
 
 @admin.register(Answer)
-class AnswerAdmin(admin.ModelAdmin):
+class AnswerAdmin(admin.ModelAdmin):  
     pass
 
 @admin.register(QuestionInPoll)
 class QuestionInPollAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('question','poll')
+
+@admin.register(AnswerUser)
+class AnswerUserAdmin(admin.ModelAdmin):
+    list_display = ('owner','questionPoll')
 
 # class QuestionChangeList(ChangeList):
 #     def __init__(self, request, model, list_display,

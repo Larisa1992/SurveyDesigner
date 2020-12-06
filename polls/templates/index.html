@@ -2,12 +2,15 @@
 
 {% block page_header %}
 <div class='jumbotron'>
-    <h1 class="display-3">Здесь вы можете проходить опросы и просматривать результаты</h1>
+    <h1 class="display-4">Здесь вы можете проходить опросы и просматривать результаты</h1>
     <p class="lead">Данный сервис предоставляет возможность создавать и настроивать свои опросы.
         Вопрос может входить в несколько опросов. Предусмотрены вопросы с типами ответов "один из четырех вариантов",
         "несколько из четырех вариантов".
     </p>
-    <a class="btn btn-lg btn-primary" href="{%url 'users:register' %}" role="button">Register &raquo;</a>
-    <a class="btn btn-lg btn-primary" href="{%url 'questions' %}" role="button">Опросы &raquo;</a>
+    {% if user.is_authentificated %}
+        <a class="btn btn-lg btn-primary" href="{%url 'poll_list' %}" role="button">Опросы &raquo;</a>
+    {% else %}
+        <a class="btn btn-lg btn-primary" href="{%url 'users:register' %}" role="button">Зарегистрироваться &raquo;</a>
+    {% endif %}
 </div>
 {% endblock page_header %}

@@ -34,6 +34,7 @@ urlpatterns = [
     path('question_manage/<int:_id>/', views.question_answer_create, name='question_answer_create'),
     path('polls/', views.PollList.as_view(), name='poll_list'),
     path('balls/<int:poll_id>/', views.balls, name='poll_questions'), #пункт 4 - баллы за вопрос
+    path('polls/<int:poll_id>/', views.poll_start, name='poll_start'), # Опрос со списком опросов для пользователя
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

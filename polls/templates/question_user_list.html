@@ -7,9 +7,9 @@
 {% endblock page_header %}
 
 {% block content %}
-    <ul>
+    <ol>
         {% for question in questions %}
             <li>{{ question.text }}</li>
         {% endfor %}
-    </ul>
+    </ol>
 {% endblock content %}

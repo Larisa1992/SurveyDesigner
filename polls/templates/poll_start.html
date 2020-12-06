@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h3>Пройти опрос</h3>
+{% endblock page_header %}
+
+{% block content %}
+<h4>Вопросы</h4>
+
+
+{% csrf_token %}
+{% for q_list in questions %}
+
+<form action="{% url 'poll_start' poll_id %}" method="post">
+    {% csrf_token %}
+        <ol class="list-group">
+            <li class="list-group-item">
+                <h5>{{ q_list.question }}</h5>
+                {{ message }}
+                <ol class="list-group">
+                    <fieldset>
+                        <legend>Варианты ответов:</legend>
+                        {% if q_list.question.typeQuestion == 1 %}
+                        {% for ans in q_list.question.answer_set.all %}
+                            <li class="list-group-item">
+                                <label for="ans-radio-1">{{ ans.textAnswer }}</label>
+                                <input type="radio" name="ans-radio" id="ans-radio-1" value="{{ ans.id }}">
+                                {% if ans.rightFlg == True %}
+                                    <input type="hidden" name="true-ans-id" id="bool-flg" value="{{ ans.id }}">
+                                {% endif %}
+                                <input type="hidden" name="score" id="score" value="{{ q_list.score }}">
+                            </li>
+                            {% endfor %}
+                        {% elif q_list.question.typeQuestion == 2 %}
+                            {% for ans in q_list.question.answer_set.all %}    
+                                <li class="list-group-item">
+                                    <label for="ans-check-1">{{ ans.textAnswer }}</label>
+                                    <input type="checkbox" name="ans-check" id="ans-check-1" value="{{ ans.id }}">
+                                    {% if ans.rightFlg == True %}
+                                        <input type="hidden" name="true-ans-id" id="bool-flg" value="{{ ans.id }}">
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </fieldset>
+                </ol>
+            </li>
+            <p><input type="submit" value="Ответить"></p>
+            <input type="hidden" name="q-in-p" id="q-in-p" value="{{ q_list.id }}">
+            <input type="hidden" name="score" id="score" value="{{ q_list.score }}">
+            <input type="hidden" name="q_id" id="q_id" value="{{ q_list.question.id }}">
+        </ol>
+    </form>
+{% endfor %}
+    <p> <input type="submit" value="Закончить опрос"></p>
+{% endblock content %}

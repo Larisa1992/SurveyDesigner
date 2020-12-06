@@ -27,8 +27,8 @@ class QuestionEditForm(forms.ModelForm):
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
-        # fields = ('textAnswer', 'rightFlg')
-        fields = '__all__'
+        fields = ('textAnswer', 'rightFlg')
+        # fields = '__all__'
 
 class QuestionInPollForm(forms.ModelForm):
     class Meta:

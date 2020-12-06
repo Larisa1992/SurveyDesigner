@@ -11,6 +11,9 @@
         {% for question in object_list %}
             <li>{{ question.text }}
                 <a class="text-info" href="{% url 'question_edit' question.id %}">Редактировать</a>
+
+                <a class="text-info" href="{% url 'question_answer_create' question.id %}">Редактировать и добавить ответы</a>
+
             </li>
         {% endfor %}
     </ul>
