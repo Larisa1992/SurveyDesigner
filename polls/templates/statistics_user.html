@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Информация об ответах пользователей</h2>
+{% endblock page_header %}
+
+{% block content %}
+
+    <table border="1">
+        <tr>
+            <th>Опрос</th>
+            <th>Баллы</th>
+            <th>Рейтинг (в %)</th>
+        </tr>
+        {% for object in user_score %}
+        <tr>
+            <td>questionPoll__poll: {{ object.questionPoll__poll }}, {{object.poll__title}}</td>
+
+            <td>{{ object.gte_count_user }}</td>
+            <td>{{ object.percent }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock content %}

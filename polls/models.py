@@ -64,6 +64,7 @@ class AnswerUser(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=("Вопрос")) #для вывода в __str__
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, verbose_name=("Ответ"))
     score = models.SmallIntegerField(null=True, verbose_name="Количество баллов")
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name=("Опрос"))
 
     def __str__(self):
         return f'{self.owner} {self.question} {self.answer} '

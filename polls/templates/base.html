@@ -23,7 +23,11 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="">Статистика</a></li>
+                {% if user.username == 'admin' %}
+                <a class="nav-link" href="{% url 'statistics' %}">Статистика по пользователям</a></li>
+                {% else %}
+                <a class="nav-link" href="{% url 'user_statistics' %}">Статистика</a></li>
+                {% endif %}   
         </ul>
 
         <ul class="navbar-nav ml-auto">

@@ -6,11 +6,14 @@ from django.views.generic.edit import UpdateView, CreateView
 from django.utils import timezone
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q, F, Count, Sum, Value, IntegerField, CharField
+
 from datetime import datetime
 # import requests
 # timezone.now
 from polls.models import Question, Poll, Answer, QuestionInPoll, AnswerUser
-from polls.forms import QuestionForm, QuestionEditForm, AnswerForm, QuestionInPollForm
+from polls.forms import QuestionForm, QuestionEditForm, AnswerForm, QuestionInPollForm, AnswerUserForm
 
 def index(request):
     return render(request, 'index.html')
@@ -28,8 +31,77 @@ class QuestionList(ListView):
 # @login_required
 class PollList(ListView):  
     model = Poll
+    queryset = Poll.objects.filter(publicationDate__gte=timezone.now())
     context_object_name='poll_list'
     template_name = 'polls.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context["status"] = AnswerUser.objects.filter(Q(owner=self.request.user) & Q(questionPoll__poll=self.kwargs['pk'])).exists()
+        # AnswerUser.objects.filter(Q(owner=self.request.user))
+        
+        # QuestionInPoll.objects.filter(questionPoll_set.owner=self.request.user).annotate(count_answ = Count('questionPoll_set'))
+        # context["status"] = AnswerUser.objects.filter(Q(owner=self.request.user))
+        polls_status = QuestionInPoll.objects.filter(answeruser__owner=self.request.user).values('poll', 'poll__title').annotate(count_answ=Count('answeruser'))
+        # context["status"] = QuestionInPoll.objects.filter(answeruser__owner=self.request.user).annotate(count_answ=Count('answeruser'))
+        context["polls_status"] = polls_status
+        # print(context)
+        return context
+
+ # ответы всех пользователей       
+# @login_required
+class AnswerUserListView(ListView):
+    model = AnswerUser
+    form_class = AnswerUserForm
+    success_url = reverse_lazy('polls')  
+    template_name = 'statistics_all.html'
+
+# user/statistics
+class UserStatistics(ListView):
+    model = AnswerUser
+    # form_class = AnswerUserForm
+    template_name = 'statistics_user.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context["status"] = AnswerUser.objects.filter(Q(owner=self.request.user) & Q(questionPoll__poll=self.kwargs['pk'])).exists()
+        # AnswerUser.objects.filter(Q(owner=self.request.user))
+        
+        # QuestionInPoll.objects.filter(questionPoll_set.owner=self.request.user).annotate(count_answ = Count('questionPoll_set'))
+        # context["status"] = AnswerUser.objects.filter(Q(owner=self.request.user))
+        
+        # user_score_2 - опрос, к-во пользователей его прошедших
+        user_score = AnswerUser.objects.values('owner', 'questionPoll__poll').annotate(sum_score=Sum('score'))
+
+        user_score_2 = user_score.values('questionPoll__poll').annotate(count_user=Count('owner', distinct=True))
+
+        # можно одним запросом
+        user_score_3 = AnswerUser.objects.values('owner', 'questionPoll__poll').annotate(sum_score=Sum('score')).values('questionPoll__poll').annotate(count_user=Count('owner'))
+        # баллы текущего пользователя в разрезе опросов
+        cur_score = user_score_2.filter(owner=self.request.user)
+
+        # >>> user_score.annotate(cur_score=Value(100,output_field=IntegerField()))
+        # <QuerySet [{'owner': 4, 'questionPoll__poll': 1, 'sum_score': 91, 'cur_score': 100}]>
+
+        # добавляем к каждому опросу к-во баллов по текущему пользователю
+        # for cur in cur_score:
+        # 2)
+        user_score = user_score.annotate(cur_score=Value(cur_score.get(questionPoll__poll=F('questionPoll__poll'))['sum_score'], output_field=IntegerField()))
+        # 3) к-во пользователей по каждому опросу
+        user_score = user_score.annotate(count_user=Value(user_score_2.get(questionPoll__poll=F('questionPoll__poll'))['count_user'], output_field=IntegerField()))
+        # 4) оставляем пользователей с большим количеством баллов
+        user_score = user_score.filter(sum_score__gt=F('cur_score'))
+        # 5) считаем пользователей с большим количеством баллов
+        user_score = user_score.values('questionPoll__poll','count_user').annotate(gte_count_user=Count('owner'))
+        # 6) вычисляем проценты
+        user_score = user_score.annotate(percent=F('gte_count_user')/F('count_user')*100)
+        # context["status"] = QuestionInPoll.objects.filter(answeruser__owner=self.request.user).annotate(count_answ=Count('answeruser'))
+        # count_user_poll = AnswerUser.objects.values('owner', 'questionPoll__poll').annotate(sum_score=Sum('score'))
+        # <QuerySet [{'questionPoll__poll': 1, 'count_user': 1, 'gte_count_user': 1, 'percent': 100}]>
+        user_score = user_score.update(questionPoll__poll=F('questionPoll__poll.title'))
+        context["polls_status"] = user_score
+        # print(context)
+        return context
 
 # М2М таблица для редактирования баллов
 # class PollEdit(UpdateView):
@@ -232,7 +304,7 @@ def poll_start(request, poll_id):
             for tans in set_ans:
                 tans = int(tans)
                 c_answer = Answer.objects.get(id=tans) # ответ пользователя
-                c_ansUser=AnswerUser.objects.create(owner = request.user, questionPoll= c_qInPoll, answer=c_answer, score=int(c_score), question=c_question)
+                c_ansUser=AnswerUser.objects.create(owner = request.user, questionPoll= c_qInPoll, answer=c_answer, score=int(c_score), question=c_question, poll=cur_poll)
                 c_ansUser.save()
                 print('Ответы ппользователя успешно сохранены ', c_ansUser.id)
                 message = 'Ответ успешно сохранен'
@@ -247,3 +319,40 @@ def poll_start(request, poll_id):
     # answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer, 'rightFlg': obj.rightFlg} for obj in Answer.objects.filter(question=_id)]
     context = {'questions': questions, 'poll_id': poll_id, 'message': message}
     return render(request, 'poll_start.html', context)
+
+
+def user_start(request):
+    user_score = AnswerUser.objects.values('owner', 'questionPoll__poll', 'poll__title').annotate(sum_score=Sum('score'))
+
+    # user_score_2 = user_score.values('questionPoll__poll').annotate(count_user=Count('owner', distinct=True))
+    user_score_2 = user_score.values('poll__title', 'questionPoll__poll').annotate(count_user=Count('owner', distinct=True))
+    # можно одним запросом
+    user_score_3 = AnswerUser.objects.values('owner', 'questionPoll__poll', 'poll__title').annotate(sum_score=Sum('score')).values('questionPoll__poll').annotate(count_user=Count('owner'))
+    # баллы текущего пользователя в разрезе опросов
+    cur_score = user_score.filter(owner=request.user)
+    # >>> user_score.annotate(cur_score=Value(100,output_field=IntegerField()))
+    # <QuerySet [{'owner': 4, 'questionPoll__poll': 1, 'sum_score': 91, 'cur_score': 100}]>
+
+    # добавляем к каждому опросу к-во баллов по текущему пользователю
+    # for cur in cur_score:
+    # 2)
+    print(user_score)
+    print(cur_score)
+    user_score = user_score.annotate(cur_score=Value(cur_score.get(questionPoll__poll=F('questionPoll__poll'))['sum_score'], output_field=IntegerField()))
+    # 3) к-во пользователей по каждому опросу
+    user_score = user_score.annotate(count_user=Value(user_score_2.get(questionPoll__poll=F('questionPoll__poll'))['count_user'], output_field=IntegerField()))
+    
+    # 4) оставляем пользователей с большим количеством баллов
+    user_score = user_score.filter(sum_score__gte=F('cur_score'))
+    # 5) считаем пользователей с большим количеством баллов
+    user_score = user_score.values('questionPoll__poll','count_user', 'poll__title').annotate(gte_count_user=Count('owner'))
+    
+    # 6) вычисляем проценты
+    user_score = user_score.annotate(percent=F('gte_count_user')/F('count_user')*100)
+    # context["status"] = QuestionInPoll.objects.filter(answeruser__owner=self.request.user).annotate(count_answ=Count('answeruser'))
+    # count_user_poll = AnswerUser.objects.values('owner', 'questionPoll__poll').annotate(sum_score=Sum('score'))
+    # <QuerySet [{'questionPoll__poll': 1, 'count_user': 1, 'gte_count_user': 1, 'percent': 100}]>
+    # user_score = user_score.update(questionPoll__poll=F('questionPoll__poll.title'))
+    context = { "user_score": user_score }
+    print(context)
+    return render(request, 'statistics_user.html', context)

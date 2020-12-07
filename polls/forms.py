@@ -1,5 +1,5 @@
 from django import forms
-from polls.models import Poll, Question, Answer,QuestionInPoll
+from polls.models import Poll, Question, Answer, QuestionInPoll, AnswerUser
 
 # редактировать список опросов в модели вопросов
 class PollQuestionChangeListForm(forms.ModelForm):
@@ -35,3 +35,9 @@ class QuestionInPollForm(forms.ModelForm):
         model = QuestionInPoll
         fields = ('question', 'score')
         # fields = '__all__'
+
+class AnswerUserForm(forms.ModelForm):
+    class Meta:
+        model = AnswerUser
+        # fields = ('textAnswer', 'rightFlg')
+        fields = '__all__'

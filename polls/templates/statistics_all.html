@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Информация об ответах пользователей</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+    </form>
+    <table border="1">
+        <tr>
+            <th>Пользователь</th>
+            <th>вопрос в опросе</th>
+            <th>Вопрос</th>
+            <th>Ответ</th>
+            <th>Баллы</th>
+        </tr>
+        {% for object in object_list %}
+        <tr>
+            <td>{{ object.owner }}</td>
+            <td>{{ object.questionPoll }}</td>
+            <td>{{ object.question }}</td>
+            <td>{{ object.answer }}</td>
+            <td>{{ object.score }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock content %}
