@@ -7,10 +7,9 @@
 {% endblock page_header %}
 
 {% block content %}
-    <form action="" method="post">
+    <form method="post">
         {% csrf_token %} 
         {{ form.as_p }}
-        {{ test_obj }}
-        <p> <input type="submit" value="Создать"></p>
+        <p><input type="submit" value="Создать"></p>
     </form>
 {% endblock content %}

@@ -8,15 +8,49 @@ from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, F, Count, Sum, Value, IntegerField, CharField
+from django.template import loader
 
 from datetime import datetime
 # import requests
 # timezone.now
-from polls.models import Question, Poll, Answer, QuestionInPoll, AnswerUser
-from polls.forms import QuestionForm, QuestionEditForm, AnswerForm, QuestionInPollForm, AnswerUserForm
+from polls.models import Question, Poll, Answer, QuestionInPoll, AnswerUser, AnswerPoll
+from polls.forms import QuestionForm, QuestionEditForm, AnswerForm, QuestionInPollForm, AnswerUserForm, PollForm, AnswerPollForm
 
 def index(request):
     return render(request, 'index.html')
+
+class PollAdminCreate(CreateView):  
+    model = Poll  
+    form_class = PollForm  
+    success_url = reverse_lazy('admin_poll_list')  
+    template_name = 'poll_create.html' 
+
+class PollAdminList(ListView):  
+    """ Список опросов для админа """
+    model = Poll
+    queryset = Poll.objects.all()
+    context_object_name='poll_list'
+    template_name = 'polls.html'
+
+class PollList(ListView):  
+    model = Poll
+    # queryset = Poll.objects.filter(publicationDate__gte=timezone.now())
+    context_object_name='poll_list'
+    template_name = 'polls.html'
+
+    def get_queryset(self):
+        return Poll.objects.filter(publicationDate__gt=timezone.now())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print('username', self.request.user.username)
+        # polls_status = QuestionInPoll.objects.filter(answeruser__owner=self.request.user).values('poll', 'poll__title').annotate(count_answ=Count('answeruser'))
+        # context["status"] = QuestionInPoll.objects.filter(answeruser__owner=self.request.user).annotate(count_answ=Count('answeruser'))
+        polls_status = AnswerUser.objects.filter(owner=self.request.user).values('poll', 'poll__title').annotate(count_answ=Count('answer'))
+        context["polls_old"] = Poll.objects.filter(publicationDate__lt=timezone.now())
+        context["polls_status"] = polls_status
+        # print(context["polls_old"])
+        return context
 
 # @login_required
 class QuestionList(ListView):
@@ -27,25 +61,15 @@ class QuestionList(ListView):
     #queryset = Question.objects.filter(polls__publicationDate__lt(timezone.now)) # отображаем только актуальные опросы
     template_name = "question_user_list.html"
 
-# список постов (для пункта 4)
-# @login_required
-class PollList(ListView):  
-    model = Poll
-    queryset = Poll.objects.filter(publicationDate__gte=timezone.now())
-    context_object_name='poll_list'
-    template_name = 'polls.html'
-    
+class QuestionCreateView(CreateView):
+    template_name = 'question_create.html'
+    form_class = QuestionForm
+    success_url = reverse_lazy('index')
+
+    # формирование словаря параметров для шаблона
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context["status"] = AnswerUser.objects.filter(Q(owner=self.request.user) & Q(questionPoll__poll=self.kwargs['pk'])).exists()
-        # AnswerUser.objects.filter(Q(owner=self.request.user))
-        
-        # QuestionInPoll.objects.filter(questionPoll_set.owner=self.request.user).annotate(count_answ = Count('questionPoll_set'))
-        # context["status"] = AnswerUser.objects.filter(Q(owner=self.request.user))
-        polls_status = QuestionInPoll.objects.filter(answeruser__owner=self.request.user).values('poll', 'poll__title').annotate(count_answ=Count('answeruser'))
-        # context["status"] = QuestionInPoll.objects.filter(answeruser__owner=self.request.user).annotate(count_answ=Count('answeruser'))
-        context["polls_status"] = polls_status
-        # print(context)
+        context["polls"] = Poll.objects.all()
         return context
 
  # ответы всех пользователей       
@@ -103,6 +127,76 @@ class UserStatistics(ListView):
         # print(context)
         return context
 
+AnswerPollFormSet = modelformset_factory(AnswerPoll, form=AnswerPollForm, can_order=True, can_delete=True, extra=4, max_num=4)
+
+def answer_ball_old(request, poll_id, q_id):
+    """ баллы за ответы в опросе для конкретного вопроса"""
+    print(poll_id, q_id)
+    # qp_Obj = QuestionInPoll.objects.get(id= int(qp_id))
+
+    cur_poll = Poll.objects.get(id= int(poll_id))
+    cur_question = Question.objects.get(id= int(q_id))
+    print('cur_question - qp_Obj ', cur_question)
+    cur_answer = cur_question.answer_set.all()
+
+    print('cur_poll', cur_poll)
+    print('cur_answer', cur_answer)
+
+    # внешний ключ фильтруем по объекту, а не по ссылке
+    # answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer, 'rightFlg': obj.rightFlg} for obj in Answer.objects.filter(question=qObj)]
+   
+    if request.method == 'POST':
+        print('answer_ball _request.POST: ', request.POST)
+        answerPoll_formset = AnswerPollFormSet(request.POST)
+        if answerPoll_formset.is_valid():
+            answerPoll_formset.save(commit=False)
+            for ans in answerPoll_formset.changed_objects:
+                print('new changed_objects answer_form', ans)
+                # ans.save()
+            # answer_formset.save(commit=True)
+            # if form.cleaned_data:
+            # for answer_form in answer_formset.deleted_objects: #отфильтровать только заполненные формы
+                # print('deleted_objects objects answer_form', answer_form.id)
+                # answer_form.save()
+            return HttpResponseRedirect(reverse_lazy('q_list'))
+        else:
+            print('not save')
+    else:
+        answerPoll_formset = AnswerPollFormSet(prefix='answer', queryset=AnswerPoll.objects.filter(poll=cur_poll))
+    return render(request, 'answer_poll.html', {'question': cur_question.text, 'formset': answerPoll_formset})
+
+def answer_ball(request, poll_id, q_id):
+    template = loader.get_template('answer_poll.html')
+    
+    cur_poll = Poll.objects.get(id= int(poll_id))
+    cur_question = Question.objects.get(id= int(q_id))
+    print('poll_id', poll_id, cur_poll)
+    print('q_id', q_id, cur_question)
+    
+    ans_poll = AnswerPoll.objects.filter(Q(poll=cur_poll) & Q(answer__question=cur_question))
+    print(ans_poll)
+    content = { "q_title": cur_question.text, 'poll': cur_poll.title, "ans_poll": ans_poll}
+    return HttpResponse(template.render(content, request))
+
+def balls_update(request, an_p_id):
+    if request.method == 'POST':
+        print(request.POST)
+        p_id = request.POST['p_id']
+        if not request.POST['an_p_id']:
+            return redirect('poll_questions', poll_id=p_id) #poll_questions - название url
+        else:
+            an_p = AnswerPoll.objects.get(id=an_p_id)
+            if not an_p:
+                return redirect('admin_poll_list')
+            an_p.score = int(request.POST['score'])
+            an_p.save()
+        return redirect('poll_questions', poll_id=p_id)
+        # return redirect('admin_poll_list')
+    else:
+        return redirect('poll_questions', poll_id=p_id)
+        # return redirect(f'balls/{p_id}/')
+
+
 # М2М таблица для редактирования баллов
 # class PollEdit(UpdateView):
 #     model = QuestionInPoll
@@ -117,7 +211,7 @@ def balls(request, poll_id):
     # and request.POST['rowid']:
     cur_poll = Poll.objects.get(id=poll_id)
     # print(f'cur_poll {cur_poll.id}' )
-    if request.method == 'POST' and request.POST.get('rowid'):
+    if request.method == 'POST' and request.POST.get('rowid'): #сохраняем баллы за вопрос
         print('POST')
         print(request.path)
         r_id = request.POST.get('rowid')
@@ -132,7 +226,7 @@ def balls(request, poll_id):
         #     form.save()
         # return HttpResponseRedirect(reverse_lazy('poll_questions', kwargs={'poll_id': request.POST['poll_id'], 'poll': cur_poll} ))
         return HttpResponseRedirect(reverse_lazy('poll_questions', kwargs={'poll_id': request.POST['poll_id']} ))
-    elif request.method == 'POST':
+    elif request.method == 'POST': #сохраняем изменения в опросе
         print(request.POST['poll_id'])
         pubDate = request.POST.get('publicationDate')
         # print(f'pubDate {pubDate} and typeof {type(pubDate)}')
@@ -150,11 +244,18 @@ def balls(request, poll_id):
         print(request.POST)
         return HttpResponseRedirect(reverse_lazy('poll_questions', kwargs={'poll_id': request.POST['poll_id'] } ))
 
-    gp_list = QuestionInPoll.objects.filter(poll=cur_poll)
+    #вопросы текущего опроса
+    qp_list = QuestionInPoll.objects.filter(poll=cur_poll)
+    # prefetch_related
         # form = QuestionInPollForm(instance=g_list)
         # g_list = QuestionInPoll.objects.filter(poll=poll_id)
-    # poll_id - ид текущего опроса    
-    context = {'gp_list': gp_list, 'poll_id': poll_id, 'poll': cur_poll }
+
+    # только вопросы в выборке, для отбора объектов вопросов
+    qp_list_vall = qp_list.values('question')
+    # вопросы текущего опроса
+    question_list = Question.objects.filter(id__in=qp_list_vall)
+
+    context = {'qp_list': qp_list, 'poll_id': poll_id, 'poll': cur_poll, 'question_list': question_list}
     return render(request, 'poll_questions.html', context)
 
 
@@ -172,18 +273,6 @@ class QuestionEditview(UpdateView):
         context = super().get_context_data(*args, **kwargs)
         # context['answers'] = Answer.objects.filter(question=pk_url_kwarg)
         print(context)
-        return context
-
-class QuestionCreateView(CreateView):
-    template_name = 'question_user_create.html'
-    form_class = QuestionForm
-    success_url = reverse_lazy('index')
-
-    # формирование словаря параметров для шаблона
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["polls"] = Poll.objects.all()
-        context["test_obj"] = "list answer"
         return context
 
 class QuestionManagerList(ListView):
@@ -290,9 +379,6 @@ def poll_start(request, poll_id):
         else:
             None
         print(c_question)
-        # определяем количество заработанных баллов: если все правильные ответы отмечены, то заработали score
-        # print(list(request.POST['ans-check']))
-        # c_answer= Answer.objects.get(id=request.POST['ans-check'])
 
         # удаляем предыдущий ответ пользователя
         answer_db = AnswerUser.objects.filter(owner = request.user, questionPoll= c_qInPoll) 
@@ -311,17 +397,13 @@ def poll_start(request, poll_id):
         else:
             message = 'не выбран вариант ответа'
             print('не выбран вариант ответа')
-            # if tans in request.POST['ans-check']:
-            #     c_score = request.POST['score']
-            # else:
-            #     c_score = 0
+
     # qObj = QuestionInPoll.objects.filter(id=poll_id)
     # answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer, 'rightFlg': obj.rightFlg} for obj in Answer.objects.filter(question=_id)]
     context = {'questions': questions, 'poll_id': poll_id, 'message': message}
     return render(request, 'poll_start.html', context)
 
-
-def user_start(request):
+def user_stat(request):
     user_score = AnswerUser.objects.values('owner', 'questionPoll__poll', 'poll__title').annotate(sum_score=Sum('score'))
 
     # user_score_2 = user_score.values('questionPoll__poll').annotate(count_user=Count('owner', distinct=True))

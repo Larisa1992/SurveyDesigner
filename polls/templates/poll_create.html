@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+    <h2>Создать опрос</h2>
+{% endblock page_header %}
+
+{% block content %}
+
+    <form method="post">  
+        {% csrf_token %}  
+        {{ form.as_p }}  
+        <input type="submit" value="Сохранить">  
+    </form> 
+
+{% endblock content %}

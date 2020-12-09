@@ -1,5 +1,16 @@
 from django import forms
-from polls.models import Poll, Question, Answer, QuestionInPoll, AnswerUser
+from django.forms import SplitDateTimeWidget, SelectDateWidget
+
+from polls.models import Poll, Question, Answer, QuestionInPoll, AnswerUser, AnswerPoll
+
+
+class PollForm(forms.ModelForm):
+    publicationDate = forms.DateTimeField (input_formats=['%Y-%m-%dT%H:%M'], widget=forms.DateTimeInput)
+        # widget= SelectDateWidget(empty_label=('Выберите год', 'Выберите месяц', 'Выберите число')))
+        # widget= SplitDateTimeWidget())
+    class Meta:  
+        model = Poll  
+        fields = '__all__'
 
 # редактировать список опросов в модели вопросов
 class PollQuestionChangeListForm(forms.ModelForm):
@@ -39,5 +50,11 @@ class QuestionInPollForm(forms.ModelForm):
 class AnswerUserForm(forms.ModelForm):
     class Meta:
         model = AnswerUser
+        # fields = ('textAnswer', 'rightFlg')
+        fields = '__all__'
+
+class AnswerPollForm(forms.ModelForm):
+    class Meta:
+        model = AnswerPoll
         # fields = ('textAnswer', 'rightFlg')
         fields = '__all__'

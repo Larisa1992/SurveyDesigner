@@ -1,0 +1,40 @@
+
+
+{% extends "base.html" %}
+
+{% load bootstrap4 %}
+
+{% block page_header %}
+    <h2>Редактировать баллы за ответы</h2>
+    <br>
+    <h4>Опрос: {{ poll }} </h4>
+    <br>
+    <h4>Вопрос: {{ q_title }} </h4>
+    <h6>Здесь вы можете отредактировать вопрос и ответы на него. 
+        В поле Опрос можете менять опросы, где данный вопрос участвует.
+    </h6>
+{% endblock page_header %}
+
+{% block content %}
+
+<table border="1">
+    <tr>
+        <th>Ответ</th>
+        <th>Баллы</th>
+    </tr>
+    {% for obj in ans_poll %}
+        <tr>
+            <td>{{ obj.answer.textAnswer }}</td>
+            <td>
+                <form action="{% url 'balls_update' obj.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="number" name="score" value="{{obj.score}}" />
+                    <input type="hidden" name="an_p_id" value="{{obj.id}}" />
+                    <input type="hidden" name="p_id" value="{{ obj.poll.id }}" />
+                    <input type="submit" value="Изменить" />
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

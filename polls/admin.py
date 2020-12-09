@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.views.main import ChangeList
 
-from polls.models import Poll, Question, Answer, QuestionInPoll, AnswerUser
+from polls.models import Poll, Question, Answer, QuestionInPoll, AnswerUser, AnswerPoll
 from polls.forms import PollQuestionChangeListForm
 
 @admin.register(Poll)
@@ -24,6 +24,10 @@ class QuestionInPollAdmin(admin.ModelAdmin):
 @admin.register(AnswerUser)
 class AnswerUserAdmin(admin.ModelAdmin):
     list_display = ('owner','questionPoll')
+
+@admin.register(AnswerPoll)
+class AnswerPollAdmin(admin.ModelAdmin):
+    list_display = ('id', 'answer','poll', 'answer')
 
 # class QuestionChangeList(ChangeList):
 #     def __init__(self, request, model, list_display,

@@ -13,8 +13,11 @@
 
 <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
-        <a class="navbar-brand" href="{% url 'poll_list' %}">Опросы</a>
-    
+        {% if user.username == 'admin' %}
+            <a class="navbar-brand" href="{% url 'admin_poll_list' %}">Опросы</a>
+        {% else %}
+            <a class="navbar-brand" href="{% url 'poll_list' %}">Опросы</a>
+        {% endif %}  
     <button class="navbar-toggler" type="button" data-toggle="collapse"
      data-target="#navbarCollapse" aria-controls="navbarCollapse"
      aria-expanded="false" aria-label="Toggle navigation">
@@ -24,10 +27,11 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 {% if user.username == 'admin' %}
-                <a class="nav-link" href="{% url 'statistics' %}">Статистика по пользователям</a></li>
+                <a class="nav-link" href="{% url 'statistics' %}">Статистика по пользователям</a>
                 {% else %}
-                <a class="nav-link" href="{% url 'user_statistics' %}">Статистика</a></li>
-                {% endif %}   
+                <a class="nav-link" href="{% url 'user_statistics' %}">Статистика</a>
+                {% endif %} 
+            </li>  
         </ul>
 
         <ul class="navbar-nav ml-auto">

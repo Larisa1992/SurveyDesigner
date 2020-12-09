@@ -56,7 +56,14 @@ class Answer(models.Model):
 
     def __str__(self):
         return f'{str(self.rightFlg)} {self.textAnswer}'
+# class AnswerPoll(models.Model):
+#     """Варианты ответа на вопрос"""
+#     answer = models.Answer(Question, on_delete=models.CASCADE, verbose_name=("Вариант ответа"))
+#     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name=("Опрос"))
+#     score = models.SmallIntegerField(null=True, verbose_name="Количество баллов")
 
+#     def __str__(self):
+#         return f'{str(self.answer)} (баллов {self.score})'
 class AnswerUser(models.Model):
     """Ответы пользователя"""
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=("Пользователь"))
@@ -67,4 +74,13 @@ class AnswerUser(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name=("Опрос"))
 
     def __str__(self):
-        return f'{self.owner} {self.question} {self.answer} '
+        return f'{self.owner} {self.question} {self.answer}'
+
+class AnswerPoll(models.Model):
+    """Баллы за ответы в опросах"""
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, verbose_name=("Ответ"))
+    score = models.SmallIntegerField(null=True, verbose_name="Количество баллов")
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name=("Опрос"))
+
+    def __str__(self):
+        return f'{self.answer} ({str(self.score)})'

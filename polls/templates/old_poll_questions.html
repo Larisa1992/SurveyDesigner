@@ -28,18 +28,39 @@
 {% endif %}
 
 <ol>
+    {% for qp in qp_list %}
+        <li>
+            {% csrf_token %}
+            <form action="{% url 'poll_questions' qp.poll_id %}" method="post" >
+                {% csrf_token %}
+                {{ qp.question }}
+                <input type="number" name="score" id="score" value="{{ qp.score }}" placeholder="Введите количество баллов за верный ответ">
+                <input type="hidden" name="rowid" id="rowid" value="{{ qp.id }}">
+                <input type="hidden" name="poll_id" id="poll_id" value="{{ qp.poll_id }}">
+                <input type="submit" name="btn" value="Сохранить и продолжить" class='btn btn-primary btn-sm'>
+            </form>
+        </li>
+    {% endfor %}
+</ol>
+
+<ol>
     {% for qp in question_list %}
         <li>
+            {% csrf_token %}
+            <form action="{% url 'poll_questions' qp.id %}" method="post" >
+                {% csrf_token %}
                 {{ qp.answer.textAnswer }}
+                <input type="number" name="score" id="score" value="{{ qp.id }}" placeholder="Введите количество баллов за верный ответ">
+                <input type="hidden" name="rowid" id="rowid" value="{{ qp.id }}">
                 <input type="hidden" name="poll_id" id="poll_id" value="{{ qp.id }}">
-                <input type="hidden" name="poll_id" id="poll_id" value="{{ qp.id }}">
-                <p>Вопрос: {{ qp.text }} </p>
-                    <a href="{% url 'answer_balls' poll_id qp.id %}"><button>Редактировать баллы</button></a>
-                <ol>
-                    {% for ans in qp.answer_set.all %}
-                   <li><p>{{ ans.textAnswer }}</p></li>
-                   {% endfor %}
-                </ol>
+                <input type="submit" name="btn" value="Сохранить и продолжить" class='btn btn-primary btn-sm'>
+                <a href="">Редактировать баллы за вопрос </a>
+                <p>Вопрос: {{ qp.text }}</p>
+                {% for ans in qp.answer_set.all %}
+                   <p>{{ ans.textAnswer }}</p>
+                {% endfor %}
+
+            </form>
         </li>
     {% endfor %}
 </ol>
