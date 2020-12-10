@@ -25,21 +25,14 @@
                         {% for ans in q_list.question.answer_set.all %}
                             <li class="list-group-item">
                                 <label for="ans-radio-1">{{ ans.textAnswer }}</label>
-                                <input type="radio" name="ans-radio" id="ans-radio-1" value="{{ ans.id }}">
-                                {% if ans.rightFlg == True %}
-                                    <input type="hidden" name="true-ans-id" id="bool-flg" value="{{ ans.id }}">
-                                {% endif %}
-                                <input type="hidden" name="score" id="score" value="{{ q_list.score }}">
+                                <input type="radio" name="ans-user" id="ans-radio-1" value="{{ ans.id }}">
                             </li>
                             {% endfor %}
                         {% elif q_list.question.typeQuestion == 2 %}
                             {% for ans in q_list.question.answer_set.all %}    
                                 <li class="list-group-item">
                                     <label for="ans-check-1">{{ ans.textAnswer }}</label>
-                                    <input type="checkbox" name="ans-check" id="ans-check-1" value="{{ ans.id }}">
-                                    {% if ans.rightFlg == True %}
-                                        <input type="hidden" name="true-ans-id" id="bool-flg" value="{{ ans.id }}">
-                                    {% endif %}
+                                    <input type="checkbox" name="ans-user" id="ans-check-1" value="{{ ans.id }}">
                                 </li>
                             {% endfor %}
                         {% endif %}

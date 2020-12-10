@@ -12,13 +12,12 @@
         <tr>
             <th>Опрос</th>
             <th>Баллы</th>
-            <th>Рейтинг (в %)</th>
+            <th>% пользователей ответили лучше</th>
         </tr>
-        {% for object in user_score %}
+        {% for object in user_statistics %}
         <tr>
-            <td>questionPoll__poll: {{ object.questionPoll__poll }}, {{object.poll__title}}</td>
-
-            <td>{{ object.gte_count_user }}</td>
+            <td> {{ object.poll__title }}</td>
+            <td>{{ object.sum_score }}</td>
             <td>{{ object.percent }}</td>
         </tr>
         {% endfor %}
