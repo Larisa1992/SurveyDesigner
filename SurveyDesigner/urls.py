@@ -27,7 +27,6 @@ urlpatterns = [
     path('questions/', views.QuestionList.as_view(), name='questions'), # доступные опросы для авторизованного пользователя
     path('q_form/', views.q_form, name='q_form'), # форма на основе классов форм
     path('q_create/', views.QuestionCreateView.as_view(), name='q_create'), # форма на основе классов форм
-    # path('q_edit/', question_edit, name='q_edit'), # форма на основе классов форм
     path('q_edit/<int:_id>/', views.question_edit, name='question_edit'), # форма редактирования вопроса
     path('q_update/<int:_id>/', views.QuestionEditview.as_view(), name='q_update'), # форма редактирования вопроса с ответами
     path('q_list/', views.QuestionManagerList.as_view(), name='q_list'), # список всех вопросов с переходом для редактирования
@@ -40,7 +39,6 @@ urlpatterns = [
     path('balls/answer/<int:poll_id>/<int:q_id>/', views.answer_ball, name='answer_balls'), #пункт 4 - баллы за вопрос
     path('balls/update/<int:an_p_id>/', views.balls_update, name='balls_update'), # обновляем баллы за вопрос
     path('statistics/', views.AnswerUserListView.as_view(), name='statistics'), # Опрос со списком опросов для пользователя
-    # path('user/statistics/', views.UserStatistics.as_view(), name='user_statistics'), # Опрос со списком опросов для пользователя
     path('user/statistics/', views.user_stat, name='user_statistics'), # Опрос со списком опросов для пользователя
 ]
 

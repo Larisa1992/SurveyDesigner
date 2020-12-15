@@ -12,14 +12,16 @@
         {{ form.as_p }}
         
     </form>
-    <table border="1">
+    <table class="table table-bordered">
+        <thead class="thead-light">
         <tr>
-            <th>Пользователь</th>
-            <th>Опрос</th>
-            <th>Вопрос</th>
-            <th>Ответ</th>
-            <th>Баллы</th>
+            <th scope="col">Пользователь</th>
+            <th scope="col">Опрос</th>
+            <th scope="col">Вопрос</th>
+            <th scope="col">Ответ</th>
+            <th scope="col">Баллы</th>
         </tr>
+    </thead>
         {% for object in object_list %}
         <tr>
             <td>{{ object.owner }}</td>

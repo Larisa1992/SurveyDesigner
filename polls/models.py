@@ -16,6 +16,11 @@ class Poll(models.Model):
         """Возвращает строковое представление модели"""
         return self.title
 
+    class Meta:
+        verbose_name='Опрос'
+        verbose_name_plural='Опросы'
+        ordering =['publicationDate']
+
 class Question(models.Model):
     """Вопросы для составления опросов"""
     text = models.CharField(max_length=500, null=True, verbose_name=("Вопрос"))
@@ -36,6 +41,11 @@ class Question(models.Model):
     def __str__(self):
         return f'{self.text}'
 
+    class Meta:
+        verbose_name='Вопрос'
+        verbose_name_plural='Вопросы'
+        ordering =['text']
+
 class QuestionInPoll(models.Model):
     """Таблица для связи вопросов и опросов (связь многие ко многим)"""
     question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True, verbose_name="Вопрос")
@@ -44,26 +54,23 @@ class QuestionInPoll(models.Model):
     
     def __str__(self):
         return f'Вопрос: "{str(self.question)}" опроса "{self.poll}"'
-
-    # def get_absolute_url(self):
-    #     return f'/poll_questions/{self.pk}/'
-
+    
+    class Meta:
+        verbose_name='Связь вопроса и опроса'
+        verbose_name_plural='Связь вопросов с опросами'
 class Answer(models.Model):
     """Варианты ответа на вопрос"""
     textAnswer = models.CharField(max_length=150, verbose_name=("Вариант ответа"))
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=("Вопрос"))
-    rightFlg = models.BooleanField(default=False, verbose_name=("Правильный ответ"))
+    # rightFlg = models.BooleanField(default=False, verbose_name=("Правильный ответ"))
 
     def __str__(self):
-        return f'{str(self.rightFlg)} {self.textAnswer}'
-# class AnswerPoll(models.Model):
-#     """Варианты ответа на вопрос"""
-#     answer = models.Answer(Question, on_delete=models.CASCADE, verbose_name=("Вариант ответа"))
-#     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name=("Опрос"))
-#     score = models.SmallIntegerField(null=True, verbose_name="Количество баллов")
-
-#     def __str__(self):
-#         return f'{str(self.answer)} (баллов {self.score})'
+        return f'{self.textAnswer}'
+# отображение в админке
+    class Meta:
+        verbose_name='Ответ'
+        verbose_name_plural='Ответы'
+        ordering =['textAnswer']
 class AnswerUser(models.Model):
     """Ответы пользователя"""
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=("Пользователь"))
@@ -75,6 +82,11 @@ class AnswerUser(models.Model):
 
     def __str__(self):
         return f'{self.owner} {self.question} {self.answer}'
+    
+    class Meta:
+        verbose_name='Ответ пользователя'
+        verbose_name_plural='Ответы пользователя'
+        ordering =['owner']
 
 class AnswerPoll(models.Model):
     """Баллы за ответы в опросах"""
@@ -84,3 +96,7 @@ class AnswerPoll(models.Model):
 
     def __str__(self):
         return f'{self.answer} ({str(self.score)})'
+
+    class Meta:
+        verbose_name='Ответ в опросах'
+        verbose_name_plural='Ответы в опросах'

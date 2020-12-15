@@ -13,9 +13,9 @@ class PollForm(forms.ModelForm):
         fields = '__all__'
 
 # редактировать список опросов в модели вопросов
-class PollQuestionChangeListForm(forms.ModelForm):
+# class PollQuestionChangeListForm(forms.ModelForm):
     # here we only need to define the field we want to be editable
-    polls = forms.ModelMultipleChoiceField(queryset= Poll.objects.all(), required=False)
+    # polls = forms.ModelMultipleChoiceField(queryset= Poll.objects.all(), required=False)
 
 # D5.7 Формы
 # https://docs.djangoproject.com/en/2.2/ref/forms/widgets/#django.forms.Select
@@ -38,7 +38,7 @@ class QuestionEditForm(forms.ModelForm):
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
-        fields = ('textAnswer', 'rightFlg')
+        fields = ('textAnswer',)
         # fields = '__all__'
 
 class QuestionInPollForm(forms.ModelForm):

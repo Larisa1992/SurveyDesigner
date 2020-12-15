@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+    django:
+        build: .
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+            - .:/app
+        ports:
+            - "8000:8000"
+        environment:
+            - DB_NAME=polls
+            - DB_USER=manager
+            - DB_PASSWORD=django
+            - DB_HOST=db
+            - SECRET_KEY='s+b*0&_^h@6d7(sl!yd)+_zy*ct8o4yfjr(#xjo&yxp1%^h@5r'
+        depends_on:
+            - db
+    db:
+        image: postgres:10.1-alpine
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_USER=manager
+            - POSTGRES_PASSWORD=django
+            - POSTGRES_DB=polls
+volumes:
+    postgres_data:

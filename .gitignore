@@ -4,3 +4,5 @@ users/__pycache__/*
 polls/__pycache__/*
 polls/migrations/*
 SurveyDesigner/.env
+.vscode/
+SurveyDesigner/.env.dev

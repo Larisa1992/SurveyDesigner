@@ -2,53 +2,35 @@ from django.contrib import admin
 from django.contrib.admin.views.main import ChangeList
 
 from polls.models import Poll, Question, Answer, QuestionInPoll, AnswerUser, AnswerPoll
-from polls.forms import PollQuestionChangeListForm
+# from polls.forms import PollQuestionChangeListForm
 
 @admin.register(Poll)
 class PollAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id','title', 'publicationDate')
+    list_display_links = ('id', 'title')
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('text','typeQuestion', 'get_parents')
+    list_display = ('id','text','typeQuestion', 'get_parents')
     autocomplete_fieids = ('polls',)
+    list_display_links = ('id', 'text')
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):  
-    pass
+    list_display = ('id', 'textAnswer','question')
+    list_display_links = ('id', 'textAnswer')
 
 @admin.register(QuestionInPoll)
 class QuestionInPollAdmin(admin.ModelAdmin):
-    list_display = ('question','poll')
+    list_display = ('id','question','poll')
+    search_fields = ('question',)
 
 @admin.register(AnswerUser)
 class AnswerUserAdmin(admin.ModelAdmin):
-    list_display = ('owner','questionPoll')
+    list_display = ('id','owner','questionPoll', 'poll')
+    search_fields = ('owner',)
 
 @admin.register(AnswerPoll)
 class AnswerPollAdmin(admin.ModelAdmin):
     list_display = ('id', 'answer','poll', 'answer')
-
-# class QuestionChangeList(ChangeList):
-#     def __init__(self, request, model, list_display,
-#         list_display_links, list_filter, date_hierarchy,
-#         search_fields, list_select_related, list_per_page,
-#         list_max_show_all, list_editable, model_admin):
-#         super(QuestionChangeList, self).__init__(request, model,
-#         list_display, list_display_links, list_filter,
-#         date_hierarchy, search_fields, list_select_related,
-#         list_per_page, list_max_show_all, list_editable, model_admin)
-        
-#          # these need to be defined here, and not in MovieAdmin
-#         self.list_display = ['text', 'typeQuestion', 'polls']
-#         self.list_display_links = ['text']
-#         self.list_editable = ['polls']
-
-# @admin.register(Question)
-# class QuestionAdmin(admin.ModelAdmin):
-
-#     def get_changelist(self, request, **kwargs):
-#         return QuestionChangeList
-
-#     def get_changelist_form(self, request, **kwargs):
-#         return PollQuestionChangeListForm
+    search_fields = ('poll',)
