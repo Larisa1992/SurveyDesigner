@@ -11,7 +11,9 @@ class Poll(models.Model):
     description = models.TextField(null=True, verbose_name="Описание")
     timer = models.IntegerField(verbose_name=("Максимальное время прохождения опроса"))
     publicationDate = models.DateTimeField(default=timezone.now, verbose_name=("Дата публикации"))
-    
+    created_dttm = models.DateTimeField(auto_now_add=True, verbose_name=("Дата создания"))
+    update_dttm = models.DateTimeField(auto_now=True, verbose_name=("Дата изменения"))
+
     def __str__(self):
         """Возвращает строковое представление модели"""
         return self.title

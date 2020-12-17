@@ -178,12 +178,10 @@ def balls(request, poll_id):
 
     #вопросы текущего опроса
     qp_list = QuestionInPoll.objects.filter(poll=cur_poll)
-
     # только вопросы в выборке, для отбора объектов вопросов
     qp_list_vall = qp_list.values('question')
     # вопросы текущего опроса
     question_list = Question.objects.filter(id__in=qp_list_vall)
-
     context = {'qp_list': qp_list, 'poll_id': poll_id, 'poll': cur_poll, 'question_list': question_list}
     return render(request, 'poll_questions.html', context)
 

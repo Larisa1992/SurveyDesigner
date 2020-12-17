@@ -3,25 +3,50 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h2>Редактирование опроса</h2>
+    <h2><span class="badge badge-secondary col-sm-6 shadow p-3 mb-2">Редактирование опроса</span></h2>
 {% endblock page_header %}
 
 {% block content %}
 {{ message_poll }}
 <form action="{% url 'poll_questions' poll.id %}" method="post">
+
     {% csrf_token %}
-    Дата публикации: {{ poll.publicationDate|date:'d-m-Y H:i:s' }}
-    <p>Заголовок: <input type="text" name="title"  value="{{ poll.title }}"></p>
-    <p>Описание: <textarea name="description" cols="50" rows="7">{{ poll.description }}</textarea></p>
-    Дата публикации: {{ poll.publicationDate|date:'d-m-Y H:i:s' }}
-    <p>Поменять дату публикации: <input type="datetime-local" name="publicationDate" ></p>
-    <p>Максимальное время прохождения опроса (мин.)<input type="number" name="timer"  value="{{ poll.timer }}" required></p>
-    <input type="hidden" name="poll_id" id="poll_id" value="{{ poll.id }}">
+
+    <p><span class="font-italic">Дата публикации: </span> {{ poll.publicationDate|date:'d-m-Y H:i:s' }} </p>
+    
+    <div class="form-group">
+
+        <div class='row'>
+            <label for="titleInput" class="col-sm-1 col-form-label">Заголовок</label>
+            <input type="text" class="form-control col-sm-5" id="titleInput" name="title" value="{{ poll.title }}">
+        </div>
+
+        <label for="InputDesc" class="col-sm-2 col-form-label">Описание:</label>
+        <textarea name="description" rows="3" class="form-control col-sm-6" id="InputDesc">{{ poll.description }}</textarea>
+
+        <div class='row'>
+            <label for="InputDate" class="col-sm-4 col-form-label">Поменять дату публикации:</label>
+            <div class="col-sm-1">
+                <input type="datetime-local" name="publicationDate" id="InputDate">
+            </div>
+        </div>
+
+        <div class='row'>
+            <label for="InputTime" class="col-sm-4 col-form-label">Максимальное время прохождения опроса </label>
+            <div class="col-sm-2">
+                <input type="number" name="timer"  value="{{ poll.timer }}" required class="form-control" id="InputTime" aria-describedby="timeHelp">
+                <small id="timeHelp" class="form-text text-muted">(минут)</small>
+                <input type="hidden" name="poll_id" value="{{ poll.id }}">
+            </div>
+        </div>
+    </div>
+
     <input type="submit" name="btn" value="Сохранить и продолжить" class='btn btn-primary btn-sm'>
+
 </form>
 <br>
-{% if gp_list %}
-    <h4>Редактирование баллов за вопрос</h4>
+{% if question_list %}
+    <h4><span class="badge badge-secondary shadow p-3 mb-2">Редактирование баллов за вопрос</span></h4>
 {% else %}
     <h5>В опросе нет вопросов</h5>
     <p>Вы можете выбрать вопросы на <a href="{% url 'q_list' %}">здесь</a> </p>
@@ -32,9 +57,9 @@
         <li>
                 {{ qp.answer.textAnswer }}
                 <input type="hidden" name="poll_id" id="poll_id" value="{{ qp.id }}">
-                <input type="hidden" name="poll_id" id="poll_id" value="{{ qp.id }}">
-                <p>Вопрос: {{ qp.text }} </p>
-                    <a href="{% url 'answer_balls' poll_id qp.id %}"><button>Редактировать баллы</button></a>
+
+                <p><span class="font-weight-bold">Вопрос:</span> {{ qp.text }}</p>
+                    <a href="{% url 'answer_balls' poll_id qp.id %}"><button class="btn btn-primary btn-sm">Редактировать баллы</button></a>
                 <ol>
                     {% for ans in qp.answer_set.all %}
                    <li><p>{{ ans.textAnswer }}</p></li>

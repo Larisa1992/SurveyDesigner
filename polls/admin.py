@@ -6,7 +6,7 @@ from polls.models import Poll, Question, Answer, QuestionInPoll, AnswerUser, Ans
 
 @admin.register(Poll)
 class PollAdmin(admin.ModelAdmin):
-    list_display = ('id','title', 'publicationDate')
+    list_display = ('id','title', 'publicationDate', 'created_dttm')
     list_display_links = ('id', 'title')
 
 @admin.register(Question)

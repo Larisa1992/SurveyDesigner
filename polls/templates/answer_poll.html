@@ -5,33 +5,36 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h2>Редактировать баллы за ответы</h2>
+    <h2>
+        <span class="badge badge-secondary col-sm-6 shadow p-3 mb-2">Редактировать баллы за ответы</span></h2>
     <br>
-    <h4>Опрос: {{ poll }} </h4>
+    
+    <p>Эта страница предназначена для управления баллами за каждый ответ в рамках опроса.</p>
+    <h4 class="p-2 mb-2 bg-light shadow rounded col-sm-8">Опрос: {{ poll }} </h4>
     <br>
-    <h4>Вопрос: {{ q_title }} </h4>
-    <h6>Здесь вы можете отредактировать вопрос и ответы на него. 
-        В поле Опрос можете менять опросы, где данный вопрос участвует.
-    </h6>
+    <h5 class="p-2 mb-2 bg-light shadow rounded col-sm-8">Вопрос: {{ q_title }} </h5>
+
 {% endblock page_header %}
 
 {% block content %}
 
-<table border="1">
+<table class="table col-sm-8">
+    <thead class="thead-light">
     <tr>
-        <th>Ответ</th>
-        <th>Баллы</th>
+        <th scope="col">Ответ</th>
+        <th scope="col">Баллы</th>
     </tr>
+    </thead>
     {% for obj in ans_poll %}
         <tr>
             <td>{{ obj.answer.textAnswer }}</td>
             <td>
                 <form action="{% url 'balls_update' obj.id %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <input type="number" name="score" value="{{obj.score}}" />
+                    <input type="number" name="score" value="{{obj.score}}"class="col-sm-2"/>
                     <input type="hidden" name="an_p_id" value="{{obj.id}}" />
                     <input type="hidden" name="p_id" value="{{ obj.poll.id }}" />
-                    <input type="submit" value="Изменить" />
+                    <input type="submit" value="Изменить" class="btn btn-primary btn-sm"/>
                 </form>
             </td>
         </tr>
