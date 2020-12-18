@@ -33,7 +33,8 @@ class Question(models.Model):
         Poll,
         through='QuestionInPoll', # through - имя связующей модели
         through_fields=('question', 'poll'),
-        related_name='polls'
+        related_name='polls',
+        verbose_name='Опросы'
     )
     picture = models.ImageField(upload_to='imgquestion/', verbose_name='Изображение', null=True,  blank=True)
 

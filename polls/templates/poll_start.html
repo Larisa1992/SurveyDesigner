@@ -1,13 +1,14 @@
-{% extends "base.html" %}
 
+{% extends "base.html" %}
+{% load static %}
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h3>Пройти опрос</h3>
+    <h3><span class="badge badge-secondary col-sm-6 shadow p-3 mb-2">Пройти опрос "{{ poll_title }}" </span></h3>
 {% endblock page_header %}
 
 {% block content %}
-<h4>Вопросы</h4>
+<h4 class="shadow-sm p-3 mb-5 bg-white rounded">Вопросы:</h4>
 
 {% csrf_token %}
 {% for q_list in questions %}
@@ -16,11 +17,15 @@
     {% csrf_token %}
         <ol class="list-group">
             <li class="list-group-item">
-                <h5>{{ q_list.question }}</h5>
+                <h4 >{{ q_list.question }}</h4>
+                {% if q_list.question.picture  %}
+                    <img class="rounded" src="{{ MEDIA_URL }}{{ q_list.question.picture }}" width="250" height="250" alt="картинка опроса"/>
+                {% endif %}
+
                 {{ message }}
                 <ol class="list-group">
                     <fieldset>
-                        <legend>Варианты ответов:</legend>
+                        <legend class="font-weight-lighter font-italic">Варианты ответов:</legend>
                         {% if q_list.question.typeQuestion == 1 %}
                         {% for ans in q_list.question.answer_set.all %}
                             <li class="list-group-item">
@@ -39,13 +44,12 @@
                     </fieldset>
                 </ol>
             </li>
-            <p><input type="submit" value="Ответить"></p>
+            <p><input type="submit" class="btn btn-primary" value="Ответить"></p>
             <input type="hidden" name="q-in-p" id="q-in-p" value="{{ q_list.id }}">
             <input type="hidden" name="score" id="score" value="{{ q_list.score }}">
             <input type="hidden" name="q_id" id="q_id" value="{{ q_list.question.id }}">
         </ol>
     </form>
 {% endfor %}
-    <p><input type="submit" value="Завершить опрос"></p>
-    <a href=""><button>Завершить опрос</button></a>
+    <a href="{% url 'user_statistics' %}"><button class="btn btn-primary btn-lg">Завершить опрос</button></a>
 {% endblock content %}

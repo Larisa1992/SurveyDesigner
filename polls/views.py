@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.db.models import Q, F, Count, Sum, Value, IntegerField, CharField
 from django.db.models.functions import Coalesce
 from django.template import loader
@@ -20,12 +21,14 @@ def index(request):
     print(DATABASES)
     return render(request, 'index.html')
 
+@method_decorator(login_required, name='dispatch')
 class PollAdminCreate(CreateView):  
     model = Poll  
     form_class = PollForm  
     success_url = reverse_lazy('admin_poll_list')  
-    template_name = 'poll_create.html' 
+    template_name = 'poll_create.html'
 
+@method_decorator(login_required, name='dispatch')
 class PollAdminList(ListView):  
     """ Список опросов для админа """
     model = Poll
@@ -33,6 +36,7 @@ class PollAdminList(ListView):
     context_object_name='poll_list'
     template_name = 'polls.html'
 
+@method_decorator(login_required, name='dispatch')
 class PollList(ListView):  
     model = Poll
     # queryset = Poll.objects.filter(publicationDate__gte=timezone.now())
@@ -52,7 +56,7 @@ class PollList(ListView):
         context["polls_status"] = polls_status
         return context
 
-# @login_required
+@method_decorator(login_required, name='dispatch')
 class QuestionList(ListView):
     model = Question
     # имя переменной, в которой хранится список объектов для отображения
@@ -61,6 +65,7 @@ class QuestionList(ListView):
     #queryset = Question.objects.filter(polls__publicationDate__lt(timezone.now)) # отображаем только актуальные опросы
     template_name = "question_user_list.html"
 
+@method_decorator(login_required, name='dispatch')
 class QuestionCreateView(CreateView):
     template_name = 'question_create.html'
     form_class = QuestionForm
@@ -72,15 +77,14 @@ class QuestionCreateView(CreateView):
         context["polls"] = Poll.objects.all()
         return context
 
- # ответы всех пользователей       
-# @login_required
+@method_decorator(login_required, name='dispatch')
 class AnswerUserListView(ListView):
     model = AnswerUser
     form_class = AnswerUserForm
     success_url = reverse_lazy('polls')
     template_name = 'statistics_all.html'
 
-# user/statistics
+@method_decorator(login_required, name='dispatch')
 class UserStatistics(ListView):
     model = AnswerUser
     template_name = 'statistics_user.html'
@@ -117,6 +121,7 @@ class UserStatistics(ListView):
 
 AnswerPollFormSet = modelformset_factory(AnswerPoll, form=AnswerPollForm, can_order=True, can_delete=True, extra=4, max_num=4)
 
+@login_required
 def answer_ball(request, poll_id, q_id):
     template = loader.get_template('answer_poll.html')
     
@@ -130,6 +135,7 @@ def answer_ball(request, poll_id, q_id):
     content = { "q_title": cur_question.text, 'poll': cur_poll.title, "ans_poll": ans_poll}
     return HttpResponse(template.render(content, request))
 
+@login_required
 def balls_update(request, an_p_id):
     if request.method == 'POST':
         print(request.POST)
@@ -146,6 +152,7 @@ def balls_update(request, an_p_id):
     else:
         return redirect('poll_questions', poll_id=p_id)
 
+@login_required
 def balls(request, poll_id):
     r_id = request.POST.get('rowid')
     cur_poll = Poll.objects.get(id=poll_id)
@@ -201,10 +208,13 @@ class QuestionEditview(UpdateView):
         print(context)
         return context
 
+ # используется в проекте
+@method_decorator(login_required, name='dispatch')
 class QuestionManagerList(ListView):
     model = Question
     template_name = 'question_list.html'
 
+@login_required
 def question_edit(request, _id):
     """ редактируем """
     qObj = Question.objects.get(id=_id)
@@ -225,10 +235,11 @@ def question_edit(request, _id):
 # extra=4
 AnswerFormSet = modelformset_factory(Answer, form=AnswerForm, can_order=True, can_delete=True, extra=4, max_num=4)
 
+@login_required
 def question_answer_create(request, _id):
     qObj = Question.objects.get(id=_id)
     # внешний ключ фильтруем по объекту, а не по ссылке
-    answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer, 'rightFlg': obj.rightFlg} for obj in Answer.objects.filter(question=qObj)]
+    answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer} for obj in Answer.objects.filter(question=qObj)]
     print(qObj)
     print(_id)
     print(answer_list)
@@ -257,7 +268,7 @@ def question_answer_create(request, _id):
         form = QuestionEditForm(instance=qObj)
     return render(request, 'question_answer_create.html', {'qObj': qObj, 'question_form' : form, 'answer_formset': answer_formset})
 
-
+@login_required
 def poll_start(request, poll_id):
     """ Страница прохождения опроса для пользователя """
     cur_poll = Poll.objects.get(id=poll_id)
@@ -267,7 +278,7 @@ def poll_start(request, poll_id):
     for q in questions:
         print(q.question.text)
         for ans in q.question.answer_set.all():
-            print(ans.textAnswer, ans.rightFlg)
+            print(ans.textAnswer)
     if request.method == 'POST':
         # print(request.POST, type(request.POST))
         set_ans = set(request.POST.getlist('ans-user')) # ответы пользователя
@@ -300,9 +311,10 @@ def poll_start(request, poll_id):
         else:
             message = 'не выбран вариант ответа'
             print('не выбран вариант ответа')
-    context = {'questions': questions, 'poll_id': poll_id, 'message': message}
+    context = {'questions': questions, 'poll_id': poll_id, 'message': message, 'poll_title': cur_poll.title}
     return render(request, 'poll_start.html', context)
 
+@login_required
 def user_stat(request):
     # 1) баллы по всем пользователям в разрезе опросов
     # print(request.user)

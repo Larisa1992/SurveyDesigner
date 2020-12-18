@@ -41,14 +41,14 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'users:logout' %}">Log out</a>
+                <a class="nav-link" href="{% url 'users:logout' %}">Выйти</a>
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+                <a class="nav-link" href="{% url 'users:register' %}">Зарегистрироваться</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'users:login' %}">Log in</a></li>
+                <a class="nav-link" href="{% url 'users:login' %}">Войти</a></li>
             {% endif %}
         </ul>
     </div>              

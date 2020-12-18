@@ -5,13 +5,17 @@ from polls.models import Poll, Question, Answer, QuestionInPoll, AnswerUser, Ans
 
 
 class PollForm(forms.ModelForm):
-    publicationDate = forms.DateTimeField (input_formats=['%Y-%m-%dT%H:%M'], widget=forms.DateTimeInput)
+    publicationDate = forms.DateTimeField(input_formats=['%Y-%m-%dT%H:%M'], widget=forms.DateTimeInput)
         # widget= SelectDateWidget(empty_label=('Выберите год', 'Выберите месяц', 'Выберите число')))
         # widget= SplitDateTimeWidget())
     class Meta:  
         model = Poll  
         fields = '__all__'
-
+        widgets = {
+            'title': forms.TextInput(attrs={'class':'form-control', 'width': '10'}),
+            'description': forms.Textarea(attrs={'class':'form-control', 'row': '4'}),
+            # 'timer': forms.NumberInput(attrs={'class':'form-control'})
+        }
 # редактировать список опросов в модели вопросов
 # class PollQuestionChangeListForm(forms.ModelForm):
     # here we only need to define the field we want to be editable
@@ -20,10 +24,6 @@ class PollForm(forms.ModelForm):
 # D5.7 Формы
 # https://docs.djangoproject.com/en/2.2/ref/forms/widgets/#django.forms.Select
 class QuestionForm(forms.ModelForm):  
-    # polls = forms.ModelChoiceField(queryset=Poll.objects.all(), label='Опрос', help_text='He забудьте задать опрос!',
-    #     widget=forms.widgets.Select(attrs={'size': 8}), empty_label="(Nothing)") 
-    # CheckboxSelectMultiple
-    # SelectMultiple
     polls = forms.ModelChoiceField(queryset=Poll.objects.all(), label='Опросы', widget=forms.widgets.SelectMultiple, empty_label="(Nothing)") 
     
     class Meta:  
@@ -34,12 +34,18 @@ class QuestionEditForm(forms.ModelForm):
     class Meta:  
         model = Question  
         fields = '__all__'
+        widgets = {
+            'text': forms.TextInput(attrs={'class':'form-control', 'width': '10'}),
+            'polls': forms.CheckboxSelectMultiple(attrs={'queryset':Poll.objects.all()}),
+            # 'timer': forms.NumberInput(attrs={'class':'form-control'})
+            # 'timer': forms.NumberInput(attrs={'class':'form-control'})
+        }
 
 class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         fields = ('textAnswer',)
-        # fields = '__all__'
+        # widgets = {'order': forms.NumberInput(attrs={'class':'form-control', 'size': '10', 'readonly':True}),}
 
 class QuestionInPollForm(forms.ModelForm):
     class Meta:

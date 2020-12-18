@@ -3,10 +3,9 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h2>Редактировать вопрос</h2>
-    <h6>Здесь вы можете отредактировать вопрос и ответы на него. 
-        В поле Опрос можете менять опросы, где данный вопрос участвует.
-    </h6>
+    <h2><span class="badge badge-secondary col-sm-6 shadow p-3 mb-2">Редактировать вопрос</span></h2>
+    <h6 class="shadow-sm p-3 mb-5 bg-white rounded col-sm-8">Здесь вы можете редактировать поля вопроса и также создвать, редактировать ответы. 
+        В поле "Опрос" можно указывать несколько опросов.</h6>
 {% endblock page_header %}
 
 {% block content %}
@@ -18,6 +17,6 @@
         {{ answer_formset.as_ul }}
         <br>
 
-        <p> <input type="submit" value="Сохранить"></p>
+        <p> <input type="submit" value="Сохранить" class="btn btn-primary" ></p>
     </form>
 {% endblock content %}

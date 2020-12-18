@@ -3,17 +3,19 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h2>Информация об ответах пользователей</h2>
+    <h2><span class="badge badge-secondary col-sm-6 shadow p-3 mb-2">Информация об ответах пользователей</span></h2>
 {% endblock page_header %}
 
 {% block content %}
 
-    <table border="1">
+    <table class="table table-bordered">
+        <thead class="thead-light">
         <tr>
             <th>Опрос</th>
             <th>Баллы</th>
             <th>% пользователей ответили лучше</th>
         </tr>
+    </thead>
         {% for object in user_statistics %}
         <tr>
             <td> {{ object.poll__title }}</td>

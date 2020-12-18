@@ -3,7 +3,7 @@
 {% load bootstrap4 %}
 
 {% block page_header %}
-    <h2>Список опросов</h2>
+<h2><span class="badge badge-secondary col-sm-6 shadow p-3 mb-2">Список опросов</span></h2>
 {% endblock page_header %}
 
 
@@ -25,7 +25,10 @@
             {% for poll in poll_list %}
             <li>
                 <a href="{% url 'poll_start' poll.id %}" title="Пройти опрос">
-                    {{ poll.title }}</a>
+                    <div class="shadow-sm p-3 mb-5 bg-white rounded">
+                        {{ poll.title }}
+                    </div>
+                </a>
             </li>
             {% endfor %}
             <h5>Пройденные опросы</h5>

@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 
 {% block page_header %}
-    <h2>Создать опрос</h2>
+    <h2>
+        <span class="badge badge-secondary col-sm-6 shadow p-3 mb-2">Создать опрос</span>
 {% endblock page_header %}
 
 {% block content %}
 
-    <form method="post">  
+    <form method="post" class='col-7'>  
         {% csrf_token %}  
         {{ form.as_p }}  
-        <input type="submit" value="Сохранить">  
+        <input type="submit" value="Сохранить" class="btn btn-primary btn">   
     </form> 
 
 {% endblock content %}

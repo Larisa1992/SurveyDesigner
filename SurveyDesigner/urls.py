@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from polls import views
 
@@ -24,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
     path('user/', include('users.urls', namespace='users')),
-    path('questions/', views.QuestionList.as_view(), name='questions'), # доступные опросы для авторизованного пользователя
+    # path('questions/', views.QuestionList.as_view(), name='questions'), # доступные опросы для авторизованного пользователя
     path('q_form/', views.q_form, name='q_form'), # форма на основе классов форм
     path('q_create/', views.QuestionCreateView.as_view(), name='q_create'), # форма на основе классов форм
     path('q_edit/<int:_id>/', views.question_edit, name='question_edit'), # форма редактирования вопроса
@@ -44,3 +45,5 @@ urlpatterns = [
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# urlpatterns += staticfiles_urlpatterns()
