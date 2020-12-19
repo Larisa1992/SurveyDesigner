@@ -24,11 +24,14 @@ class PollForm(forms.ModelForm):
 # D5.7 Формы
 # https://docs.djangoproject.com/en/2.2/ref/forms/widgets/#django.forms.Select
 class QuestionForm(forms.ModelForm):  
-    polls = forms.ModelChoiceField(queryset=Poll.objects.all(), label='Опросы', widget=forms.widgets.SelectMultiple, empty_label="(Nothing)") 
-    
+    # polls = forms.ModelChoiceField(queryset=Poll.objects.all(), label='Опросы', widget=forms.widgets.SelectMultiple, empty_label="(Nothing)") 
     class Meta:  
         model = Question  
         fields = '__all__'
+        widgets = {
+        'text': forms.TextInput(attrs={'class':'form-control'}),
+        'polls': forms.CheckboxSelectMultiple(attrs={'queryset':Poll.objects.all()})}
+        # 'timer': forms.NumberInput(attrs={'class':'form-control'})}
 
 class QuestionEditForm(forms.ModelForm):  
     class Meta:  
@@ -37,8 +40,6 @@ class QuestionEditForm(forms.ModelForm):
         widgets = {
             'text': forms.TextInput(attrs={'class':'form-control', 'width': '10'}),
             'polls': forms.CheckboxSelectMultiple(attrs={'queryset':Poll.objects.all()}),
-            # 'timer': forms.NumberInput(attrs={'class':'form-control'})
-            # 'timer': forms.NumberInput(attrs={'class':'form-control'})
         }
 
 class AnswerForm(forms.ModelForm):

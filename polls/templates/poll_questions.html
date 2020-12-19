@@ -55,16 +55,25 @@
 <ol>
     {% for qp in question_list %}
         <li>
-                {{ qp.answer.textAnswer }}
-                <input type="hidden" name="poll_id" id="poll_id" value="{{ qp.id }}">
+            {{ qp.answer.textAnswer }}
+            <input type="hidden" name="poll_id" id="poll_id" value="{{ qp.id }}">
 
-                <p><span class="font-weight-bold">Вопрос:</span> {{ qp.text }}</p>
-                    <a href="{% url 'answer_balls' poll_id qp.id %}"><button class="btn btn-primary btn-sm">Редактировать баллы</button></a>
-                <ol>
-                    {% for ans in qp.answer_set.all %}
-                   <li><p>{{ ans.textAnswer }}</p></li>
-                   {% endfor %}
-                </ol>
+            <p><span class="font-weight-bold">Вопрос:</span> {{ qp.text }}</p>
+                <a href="{% url 'answer_balls' poll_id qp.id %}"><button class="btn btn-primary btn-sm">Редактировать баллы</button></a>
+            <ol>
+                {% for ans in qp.answer_set.all %}
+                <li><p>{{ ans.textAnswer }} ( баллы:
+                    {% for sc in ans.answerpoll_set.all %}
+                        {% if sc.poll_id == poll_id %}
+                            {{ sc.score }}
+                        {% endif %}
+                        )
+                        {% empty %}
+                        0
+                    {% endfor %}
+                </p></li>
+                {% endfor %}
+            </ol>
         </li>
     {% endfor %}
 </ol>

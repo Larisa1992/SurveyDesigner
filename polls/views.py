@@ -70,12 +70,13 @@ class QuestionCreateView(CreateView):
     template_name = 'question_create.html'
     form_class = QuestionForm
     success_url = reverse_lazy('index')
+    # model = Question
 
     # формирование словаря параметров для шаблона
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["polls"] = Poll.objects.all()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context["polls"] = Poll.objects.all()
+    #     return context
 
 @method_decorator(login_required, name='dispatch')
 class AnswerUserListView(ListView):

@@ -15,6 +15,7 @@
     <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
         {% if user.username == 'admin' %}
             <a class="navbar-brand" href="{% url 'admin_poll_list' %}">Опросы</a>
+            <a class="navbar-brand" href="{% url 'q_list' %}">Вопросы</a>
         {% else %}
             <a class="navbar-brand" href="{% url 'poll_list' %}">Опросы</a>
         {% endif %}  
