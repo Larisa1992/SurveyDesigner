@@ -34,7 +34,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'localhost', 'rocky-tundra-10357.herokuapp.com']
 
 DOCKER = False
-HEROKU = True
+HEROKU = False
 # Application definition
 
 INSTALLED_APPS = [
