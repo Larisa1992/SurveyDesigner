@@ -10,6 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+# heroku
+import dj_database_url
+import django_heroku
+
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -27,10 +31,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'localhost', 'rocky-tundra-10357.herokuapp.com']
 
 DOCKER = False
-
+HEROKU = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -47,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', #для heroku
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -76,17 +81,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'SurveyDesigner.wsgi.application'
 
-if DOCKER:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'polls',
-            'USER': 'manager',
-            'PASSWORD': 'django',
-            'HOST': 'db',
-            'PORT': 5432,
-        }
-    }
+if HEROKU:
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql',
+    #         'NAME': 'polls',
+    #         'USER': 'manager',
+    #         'PASSWORD': 'django',
+    #         'HOST': 'db',
+    #         'PORT': 5432,
+    #     }
+    # }
+    # для Heroku
+    import dj_database_url  
+    DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
 else:
     DATABASES = {
         'default': {
@@ -111,8 +119,8 @@ else:
 # }
 
 # для Heroku
-# import dj_database_url  
-# DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
+import dj_database_url  
+DATABASES = {'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))}
 
 
 # DATABASES = {
@@ -199,4 +207,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 LOGIN_URL='/user/login/'
 
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
