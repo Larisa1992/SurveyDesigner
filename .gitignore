@@ -5,3 +5,4 @@ polls/__pycache__/*
 SurveyDesigner/.env
 .vscode/
 SurveyDesigner/.env.dev
+data.xml

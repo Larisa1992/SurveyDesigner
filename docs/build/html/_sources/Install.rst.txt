@@ -15,7 +15,9 @@
 
 Если получили ошибку: **django.db.utils.OperationalError: FATAL:  database "polls" does not exist**
 выполните команду *docker-compose down -v* и пересоберите образ и запустите контейнер командой из шага 3.
-
+#. Для загрузки данных в проект, выполните команды в консоле:
+*python manage.py loaddata users_data.xml*
+*python manage.py loaddata polls_data.xml*
 Heroku
 -------------------
 Проект доступен по ссылке_.

@@ -46,11 +46,13 @@
 <li><p>Примените миграции командой <em>docker-compose exec django python manage.py migrate –noinput</em></p></li>
 </ol>
 <p>Если получили ошибку: <strong>django.db.utils.OperationalError: FATAL:  database “polls” does not exist</strong>
-выполните команду <em>docker-compose down -v</em> и пересоберите образ и запустите контейнер командой из шага 3.</p>
-</div>
-<div class="section" id="heroku">
-<h2>Heroku<a class="headerlink" href="#heroku" title="Permalink to this headline">¶</a></h2>
-<p>Проект доступен по <a class="reference external" href="https://rocky-tundra-10357.herokuapp.com/">ссылке</a>.</p>
+выполните команду <em>docker-compose down -v</em> и пересоберите образ и запустите контейнер командой из шага 3.
+#. Для загрузки данных в проект, выполните команды в консоле:
+<em>python manage.py loaddata users_data.xml</em>
+<em>python manage.py loaddata polls_data.xml</em>
+Heroku
+——————-
+Проект доступен по <a class="reference external" href="https://rocky-tundra-10357.herokuapp.com/">ссылке</a>.</p>
 </div>
 </div>
 
@@ -77,7 +79,6 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Приложения</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Запуск проекта</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#docker">Запуск проекта в Docker контейнере</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#heroku">Heroku</a></li>
 </ul>
 </li>
 </ul>
