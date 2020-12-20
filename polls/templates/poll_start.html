@@ -25,6 +25,7 @@
                 {{ message }}
                 <ol class="list-group">
                     <fieldset>
+                        <p class="text-danger font-weight-bold"> {{ message }}</p>
                         <legend class="font-weight-lighter font-italic">Варианты ответов:</legend>
                         {% if q_list.question.typeQuestion == 1 %}
                         {% for ans in q_list.question.answer_set.all %}
