@@ -25,11 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"), #: Главная страница
     path('user/', include('users.urls', namespace='users')),
-    # path('questions/', views.QuestionList.as_view(), name='questions'), # доступные опросы для авторизованного пользователя
-    # path('q_form/', views.q_form, name='q_form'), # форма на основе классов форм
     path('q_create/', views.QuestionCreateView.as_view(), name='q_create'), # форма на основе классов форм
     path('q_edit/<int:_id>/', views.question_edit, name='question_edit'), # форма редактирования вопроса
-    # path('q_update/<int:_id>/', views.QuestionEditview.as_view(), name='q_update'), # форма редактирования вопроса с ответами
     path('q_list/', views.QuestionManagerList.as_view(), name='q_list'), # список всех вопросов с переходом для редактирования
     path('question_manage/<int:_id>/', views.question_answer_create, name='question_answer_create'),
     path('polls/', views.PollList.as_view(), name='poll_list'), # список опросов для пользователя

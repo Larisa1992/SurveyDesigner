@@ -5,6 +5,3 @@ polls/__pycache__/*
 SurveyDesigner/.env
 .vscode/
 SurveyDesigner/.env.dev
-Makefile
-make.bat
-source/
