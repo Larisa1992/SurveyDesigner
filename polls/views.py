@@ -285,9 +285,9 @@ def user_stat(request):
     # 2.2) баллы в разрезе опросов, дополненны баллами текущего пользователя
     # {'owner': 5, 'poll_id': 1, 'sum_score': 6, 'cur_score': 4}
 
-    add_cur_sum = user_score.annotate(cur_score=Value(cur_score.get(poll_id=F('poll_id'))['sum_score'], output_field=IntegerField()))
+    # add_cur_sum = user_score.annotate(cur_score=Value(cur_score.get(poll_id=F('poll_id'))['sum_score'], output_field=IntegerField()))
 
-    # add_cur_sum = user_score.annotate(cur_score=Value(get_object_or_404(cur_score, poll_id=F('poll_id'))['sum_score']), output_field=IntegerField())
+    add_cur_sum = user_score.annotate(cur_score=Value(get_object_or_404(cur_score, poll_id=F('poll_id'))['sum_score']), output_field=IntegerField())
     # 2.3) оставляем записи с оценками, больше оценки текущего пользователя
     gt_user_poll = add_cur_sum.filter(sum_score__gt=F('cur_score'))
     if gt_user_poll:
@@ -301,7 +301,7 @@ def user_stat(request):
     distinct_user_poll = user_score.values('poll_id').annotate(count_user=Count('owner', distinct=True))
     # 4) собираем результаты в один набор данных
     # pre_statistics = cur_score.annotate(count_user=Value(distinct_user_poll.get(poll_id=F('poll_id'))['count_user'], output_field=IntegerField())).annotate(gt_count=Value(gt_count.get_object_or_404(poll_id=F('poll_id'))['gt_count'] , output_field=IntegerField()))
-    pre_statistics = cur_score.annotate(count_user=Value(distinct_user_poll.get(poll_id=F('poll_id'))['count_user'], output_field=IntegerField())).annotate(gt_count=Value(get_object_or_404(gt_count,poll_id=F('poll_id'))['gt_count'] , output_field=IntegerField()))   
+    pre_statistics = cur_score.annotate(count_user=Value(distinct_user_poll.get(poll_id=F('poll_id'))['count_user'], output_field=IntegerField())).annotate(gt_count=Value(get_object_or_404(gt_count, poll_id=F('poll_id'))['gt_count'] , output_field=IntegerField()))   
     # >>> print(pre_statistics)
     # <QuerySet [{'owner': 4, 'poll_id': 1, 'sum_score': 4, 'count_user': 2, 'gt_count': 1}]>
     # 6) вычисляем рейтинг
