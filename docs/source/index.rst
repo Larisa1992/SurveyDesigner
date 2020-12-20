@@ -15,10 +15,3 @@ Welcome to Polls's documentation!
    modules.rst
    
    Install.rst
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

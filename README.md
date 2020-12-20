@@ -15,4 +15,7 @@ https://rocky-tundra-10357.herokuapp.com/
 python manage.py loaddata users_data.xml
 
 2) основного приложения polls
-python manage.py loaddata data.xml
+python manage.py loaddata polls_data.xml
+
+Документация проекта оформлена в формате HTML.
+Чтобы ее просмотреть, в скаченном репозитории откройте файл SurveyDesigner\docs\build\html\index.html в браузере.
