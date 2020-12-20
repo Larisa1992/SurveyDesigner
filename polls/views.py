@@ -1,6 +1,6 @@
   
 from django.forms import formset_factory, modelformset_factory
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView
 from django.utils import timezone
@@ -273,7 +273,10 @@ def user_stat(request):
     cur_score = user_score.filter(owner=request.user)
     # 2.2) баллы в разрезе опросов, дополненны баллами текущего пользователя
     # {'owner': 5, 'poll_id': 1, 'sum_score': 6, 'cur_score': 4}
-    add_cur_sum = user_score.annotate(cur_score=Value(cur_score.get(poll_id=F('poll_id'))['sum_score'], output_field=IntegerField()))
+
+    # add_cur_sum = user_score.annotate(cur_score=Value(cur_score.get(poll_id=F('poll_id'))['sum_score'], output_field=IntegerField()))
+
+    add_cur_sum = user_score.annotate(cur_score=Value(get_list_or_404(poll_id=F('poll_id')))['sum_score'], output_field=IntegerField())
     # 2.3) оставляем записи с оценками, больше оценки текущего пользователя
     gt_user_poll = add_cur_sum.filter(sum_score__gt=F('cur_score'))
     if gt_user_poll:
