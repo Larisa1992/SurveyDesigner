@@ -97,9 +97,9 @@ class UserStatistics(ListView):
         # добавляем к каждому опросу к-во баллов по текущему пользователю
         # for cur in cur_score:
         # 2)
-        user_score = user_score.annotate(cur_score=Value(cur_score.get_object_or_404(questionPoll__poll=F('questionPoll__poll'))['sum_score'], output_field=IntegerField()))
+        user_score = user_score.annotate(cur_score=Value(cur_score.get(questionPoll__poll=F('questionPoll__poll'))['sum_score'], output_field=IntegerField()))
         # 3) к-во пользователей по каждому опросу
-        user_score = user_score.annotate(count_user=Value(user_score_2.get_object_or_404(questionPoll__poll=F('questionPoll__poll'))['count_user'], output_field=IntegerField()))
+        user_score = user_score.annotate(count_user=Value(user_score_2.get(questionPoll__poll=F('questionPoll__poll'))['count_user'], output_field=IntegerField()))
         # 4) оставляем пользователей с большим количеством баллов
         user_score = user_score.filter(sum_score__gt=F('cur_score'))
         # 5) считаем пользователей с большим количеством баллов
