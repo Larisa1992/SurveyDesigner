@@ -31,25 +31,18 @@
                 </a>
             </li>
             {% endfor %}
-            <h5>Пройденные опросы</h5>
-            {% for st in polls_status %}
-            <li>
-                {{ st.poll__title }}    
-                {% if st.count_answ != 0 %}
-                    Статус: Пройден
-                {% else %}
-                    Статус: Не пройдены
-                {% endif %}    
-            </li>
-            {% endfor %}
-
         </ol>
 
         <ol>
             <h5>Пройденные опросы</h5>
             {% for st in polls_status %}
             <li>
-                {{ st.poll__title }} 
+                {{ st.poll__title }}    
+                {% if st.count_answ != 0 %}
+                    - Статус: Пройден
+                {% else %}
+                   - Статус: Не пройдены
+                {% endif %}    
             </li>
             {% endfor %}
         </ol>

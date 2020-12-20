@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SurveyDesigner &#8212; Polls 1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Приложения" href="modules.html" />
+    <link rel="prev" title="Welcome to Polls’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="surveydesigner">
+<h1>SurveyDesigner<a class="headerlink" href="#surveydesigner" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>Описание проекта<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>В проекте изпользуется Django + Postgresql.
+Приложение можно развернуть в Docker контейнере.
+Также, проект выложен на Heroku.
+Подробнее см. в разделе <em>Запуск проекта</em> <a class="reference internal" href="Install.html#id1"><span class="std std-ref">Запуск проекта</span></a></p>
+</div>
+<div class="section" id="urls">
+<h2>Urls проекта <strong>Конструктор опросов</strong><a class="headerlink" href="#urls" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><em>admin/</em></p></li>
+<li><p><em>/</em> Главная страница</p></li>
+<li><p><em>user/</em> - для путей приложения users</p></li>
+<li><p><em>questions/</em> - доступные опросы для авторизованного пользователя</p></li>
+<li><p><em>q_form/</em> - форма на основе классов форм (<strong>delete</strong>)</p></li>
+<li><p><em>q_create/</em> - форма на основе классов форм</p></li>
+<li><p><em>q_edit/&lt;int:_id&gt;/</em> - форма редактирования вопроса (<strong>?delete</strong>)</p></li>
+<li><p><em>q_update/&lt;int:_id&gt;/</em> форма редактирования вопроса с ответами (<strong>?delete</strong>)</p></li>
+<li><p><em>q_list/</em> - список всех вопросов с переходом для редактирования</p></li>
+<li><p><em>question_manage/&lt;int:_id&gt;/</em> -</p></li>
+<li><p><em>polls/</em> - список опросов</p></li>
+<li><p><em>polls/&lt;int:poll_id&gt;//</em> - Опрос со списком опросов для пользователя</p></li>
+<li><p><em>polls/admin/</em> - список опросов для администратора</p></li>
+<li><p><em>polls/create/</em> - (<strong>?delete</strong>)</p></li>
+<li><p><em>balls/&lt;int:poll_id&gt;/</em> - баллы за вопрос?</p></li>
+<li><p><em>balls/answer/&lt;int:poll_id&gt;/&lt;int:q_id&gt;/</em> - редактирование баллов за ответы в намках определенного опроса</p></li>
+<li><p><em>balls/update/&lt;int:an_p_id&gt;/</em> - обновляем баллы за вопрос</p></li>
+<li><p><em>statistics/</em> - ответы всех пользователей для администратора приложения</p></li>
+<li><p><em>user/statistics/</em> - Статистика для авторизованного пользователя</p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Polls</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Содержание:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SurveyDesigner</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Описание проекта</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#urls">Urls проекта <strong>Конструктор опросов</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Приложения</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install.html">Запуск проекта</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Polls’s documentation!</a></li>
+      <li>Next: <a href="modules.html" title="next chapter">Приложения</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Larisa.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/SurveyDesigner.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

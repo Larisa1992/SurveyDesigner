@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.contrib.admin.views.main import ChangeList
 
 from polls.models import Poll, Question, Answer, QuestionInPoll, AnswerUser, AnswerPoll
-# from polls.forms import PollQuestionChangeListForm
 
 @admin.register(Poll)
 class PollAdmin(admin.ModelAdmin):

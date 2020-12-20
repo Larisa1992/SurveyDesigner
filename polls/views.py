@@ -14,11 +14,11 @@ from django.template import loader
 
 from datetime import datetime
 from polls.models import Question, Poll, Answer, QuestionInPoll, AnswerUser, AnswerPoll
-from polls.forms import QuestionForm, QuestionEditForm, AnswerForm, QuestionInPollForm, AnswerUserForm, PollForm, AnswerPollForm
+from polls.forms import QuestionEditForm, AnswerForm, AnswerUserForm, PollForm, AnswerPollForm
 from SurveyDesigner.settings import DATABASES
 
 def index(request):
-    print(DATABASES)
+    """Главная страница с описанием проекта"""
     return render(request, 'index.html')
 
 @method_decorator(login_required, name='dispatch')
@@ -54,6 +54,9 @@ class PollList(ListView):
         polls_status = AnswerUser.objects.filter(owner=self.request.user).values('poll', 'poll__title').annotate(count_answ=Count('answer'))
         context["polls_old"] = Poll.objects.filter(publicationDate__lt=timezone.now())
         context["polls_status"] = polls_status
+        # отображаем только непройденные и не архивные
+        context['poll_list'] = Poll.objects.filter(publicationDate__gt=timezone.now()).exclude(id__in=polls_status.values('poll'))
+        print(context)
         return context
 
 @method_decorator(login_required, name='dispatch')
@@ -68,7 +71,7 @@ class QuestionList(ListView):
 @method_decorator(login_required, name='dispatch')
 class QuestionCreateView(CreateView):
     template_name = 'question_create.html'
-    form_class = QuestionForm
+    form_class = QuestionEditForm #QuestionForm
     success_url = reverse_lazy('index')
     # model = Question
 
@@ -87,6 +90,9 @@ class AnswerUserListView(ListView):
 
 @method_decorator(login_required, name='dispatch')
 class UserStatistics(ListView):
+    """Статистика прохждения опросов для авторизаванного пользователя.
+        Оформлена в виде таблицы, в последнем столбце указан рейтинг авторизованного пользователя
+    """
     model = AnswerUser
     template_name = 'statistics_user.html'
 
@@ -124,6 +130,7 @@ AnswerPollFormSet = modelformset_factory(AnswerPoll, form=AnswerPollForm, can_or
 
 @login_required
 def answer_ball(request, poll_id, q_id):
+    """Страница редактирования баллоы за ответ в рамках одного опроса"""
     template = loader.get_template('answer_poll.html')
     
     cur_poll = Poll.objects.get(id= int(poll_id))
@@ -194,20 +201,20 @@ def balls(request, poll_id):
     return render(request, 'poll_questions.html', context)
 
 # D5.7 Формы
-def q_form(request):
-    form = QuestionForm
-    return render(request, 'question_user_edit.html', {'form': form})
+# def q_form(request):
+#     form = QuestionForm
+#     return render(request, 'question_user_edit.html', {'form': form})
 
-class QuestionEditview(UpdateView):
-    template_name='question_edit.html'
-    model = Question
-    form_class = QuestionEditForm
+# class QuestionEditview(UpdateView):
+#     template_name='question_edit.html'
+#     model = Question
+#     form_class = QuestionEditForm
     
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        # context['answers'] = Answer.objects.filter(question=pk_url_kwarg)
-        print(context)
-        return context
+#     def get_context_data(self, *args, **kwargs):
+#         context = super().get_context_data(*args, **kwargs)
+#         # context['answers'] = Answer.objects.filter(question=pk_url_kwarg)
+#         print(context)
+#         return context
 
  # используется в проекте
 @method_decorator(login_required, name='dispatch')
@@ -238,6 +245,7 @@ AnswerFormSet = modelformset_factory(Answer, form=AnswerForm, can_order=True, ca
 
 @login_required
 def question_answer_create(request, _id):
+    """Редактируем ответы на вопросы"""
     qObj = Question.objects.get(id=_id)
     # внешний ключ фильтруем по объекту, а не по ссылке
     answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer} for obj in Answer.objects.filter(question=qObj)]
@@ -271,7 +279,7 @@ def question_answer_create(request, _id):
 
 @login_required
 def poll_start(request, poll_id):
-    """ Страница прохождения опроса для пользователя """
+    """Страница прохождения опроса для пользователя"""
     cur_poll = Poll.objects.get(id=poll_id)
     # подтягиваем данные по внешнему ключу question
     questions = QuestionInPoll.objects.filter(poll=poll_id).select_related('question')
@@ -317,6 +325,7 @@ def poll_start(request, poll_id):
 
 @login_required
 def user_stat(request):
+    """Считаем статистику для авторизованного пользователя"""
     # 1) баллы по всем пользователям в разрезе опросов
     # print(request.user)
     user_score = AnswerUser.objects.values('owner', 'poll_id', 'poll__title').annotate(sum_score=Sum('score'))

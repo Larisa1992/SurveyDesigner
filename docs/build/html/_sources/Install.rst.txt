@@ -1,0 +1,22 @@
+***************
+Запуск проекта
+***************
+
+Запуск проекта в Docker контейнере
+----------------------------------
+#. Склонируйте проект_ из Git репозитория
+
+.. _проект: https://github.com/Larisa1992/SurveyDesigner.git
+
+#. Откройте командную строку и перейдите в папку, где лежит файл *docker-compose.yaml*
+#. Соберите и запустите Docker контейнер командой *docker-compose up -d --build*
+#. Примените миграции командой *docker-compose exec django python manage.py migrate --noinput*
+
+Если получили ошибку: **django.db.utils.OperationalError: FATAL:  database "polls" does not exist**
+выполните команду *docker-compose down -v* и пересоберите образ и запустите контейнер командой из шага 3.
+
+Heroku
+-------------------
+Проект доступен по ссылке_.
+
+.. _ссылке: https://rocky-tundra-10357.herokuapp.com/

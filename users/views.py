@@ -8,6 +8,7 @@ from django.views.generic import FormView
 from users.forms import UserRegistrationForm
 
 def login(request):
+    """Форма авторизация реализована с помощью встроенной формы django AuthenticationForm из *django.contrib.auth.forms*"""
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
@@ -18,10 +19,12 @@ def login(request):
         return render(request, 'login.html', context)
 
 def logout(request):  
+    """Выход из аккаунта реализован с помощью встроенного метода *jango.contrib.auth.logout*"""
     auth.logout(request)
     return HttpResponseRedirect(reverse_lazy('index'))
 
 def register(request):
+    """Форма регистрации реализована с помощью forms.ModelForm"""
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():

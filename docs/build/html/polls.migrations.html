@@ -1,0 +1,436 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>polls.migrations package &#8212; Polls 1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="polls package" href="polls.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="polls-migrations-package">
+<h1>polls.migrations package<a class="headerlink" href="#polls-migrations-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-polls.migrations.0001_initial">
+<span id="polls-migrations-0001-initial-module"></span><h2>polls.migrations.0001_initial module<a class="headerlink" href="#module-polls.migrations.0001_initial" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0001_initial.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0001_initial.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0001_initial.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0001_initial.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = []</em><a class="headerlink" href="#polls.migrations.0001_initial.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0001_initial.Migration.initial">
+<code class="sig-name descname">initial</code><em class="property"> = True</em><a class="headerlink" href="#polls.migrations.0001_initial.Migration.initial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0001_initial.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;CreateModel  name='Poll', fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('title', &lt;django.db.models.fields.CharField&gt;), ('description', &lt;django.db.models.fields.TextField&gt;), ('timer', &lt;django.db.models.fields.IntegerField&gt;)]&gt;, &lt;CreateModel  name='Question', fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('title', &lt;django.db.models.fields.CharField&gt;)]&gt;, &lt;CreateModel  name='QuestionInPoll', fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('timer', &lt;django.db.models.fields.IntegerField&gt;), ('poll', &lt;django.db.models.fields.related.ForeignKey&gt;), ('question', &lt;django.db.models.fields.related.ForeignKey&gt;)]&gt;, &lt;AddField  model_name='question', name='polls', field=&lt;django.db.models.fields.related.ManyToManyField&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0001_initial.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0002_auto_20201126_2216">
+<span id="polls-migrations-0002-auto-20201126-2216-module"></span><h2>polls.migrations.0002_auto_20201126_2216 module<a class="headerlink" href="#module-polls.migrations.0002_auto_20201126_2216" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0002_auto_20201126_2216.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0002_auto_20201126_2216.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0002_auto_20201126_2216.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0002_auto_20201126_2216.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0001_initial')]</em><a class="headerlink" href="#polls.migrations.0002_auto_20201126_2216.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0002_auto_20201126_2216.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;RenameField  model_name='question', old_name='title', new_name='text'&gt;, &lt;CreateModel  name='Answer', fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('textAnswer', &lt;django.db.models.fields.CharField&gt;), ('question', &lt;django.db.models.fields.related.ForeignKey&gt;)]&gt;]</em><a class="headerlink" href="#polls.migrations.0002_auto_20201126_2216.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0003_question_typequestion">
+<span id="polls-migrations-0003-question-typequestion-module"></span><h2>polls.migrations.0003_question_typequestion module<a class="headerlink" href="#module-polls.migrations.0003_question_typequestion" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0003_question_typequestion.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0003_question_typequestion.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0003_question_typequestion.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0003_question_typequestion.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0002_auto_20201126_2216')]</em><a class="headerlink" href="#polls.migrations.0003_question_typequestion.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0003_question_typequestion.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AddField  model_name='question', name='typeQuestion', field=&lt;django.db.models.fields.IntegerField&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0003_question_typequestion.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0004_auto_20201128_1316">
+<span id="polls-migrations-0004-auto-20201128-1316-module"></span><h2>polls.migrations.0004_auto_20201128_1316 module<a class="headerlink" href="#module-polls.migrations.0004_auto_20201128_1316" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0004_auto_20201128_1316.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0004_auto_20201128_1316.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0004_auto_20201128_1316.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0004_auto_20201128_1316.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0003_question_typequestion')]</em><a class="headerlink" href="#polls.migrations.0004_auto_20201128_1316.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0004_auto_20201128_1316.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AddField  model_name='answer', name='rightFlg', field=&lt;django.db.models.fields.BooleanField&gt;&gt;, &lt;AddField  model_name='question', name='timer', field=&lt;django.db.models.fields.IntegerField&gt;, preserve_default=False&gt;, &lt;AlterField  model_name='answer', name='question', field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;, &lt;AlterField  model_name='question', name='typeQuestion', field=&lt;django.db.models.fields.IntegerField&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0004_auto_20201128_1316.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0005_auto_20201128_1829">
+<span id="polls-migrations-0005-auto-20201128-1829-module"></span><h2>polls.migrations.0005_auto_20201128_1829 module<a class="headerlink" href="#module-polls.migrations.0005_auto_20201128_1829" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0005_auto_20201128_1829.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0005_auto_20201128_1829.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0005_auto_20201128_1829.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0005_auto_20201128_1829.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0004_auto_20201128_1316')]</em><a class="headerlink" href="#polls.migrations.0005_auto_20201128_1829.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0005_auto_20201128_1829.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;RemoveField  model_name='questioninpoll', name='timer'&gt;, &lt;AlterField  model_name='answer', name='question', field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;, &lt;AlterField  model_name='answer', name='rightFlg', field=&lt;django.db.models.fields.BooleanField&gt;&gt;, &lt;AlterField  model_name='question', name='polls', field=&lt;django.db.models.fields.related.ManyToManyField&gt;&gt;, &lt;AlterField  model_name='question', name='timer', field=&lt;django.db.models.fields.IntegerField&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0005_auto_20201128_1829.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0006_auto_20201129_1041">
+<span id="polls-migrations-0006-auto-20201129-1041-module"></span><h2>polls.migrations.0006_auto_20201129_1041 module<a class="headerlink" href="#module-polls.migrations.0006_auto_20201129_1041" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0006_auto_20201129_1041.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0006_auto_20201129_1041.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0006_auto_20201129_1041.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0006_auto_20201129_1041.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0005_auto_20201128_1829')]</em><a class="headerlink" href="#polls.migrations.0006_auto_20201129_1041.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0006_auto_20201129_1041.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AddField  model_name='poll', name='publicationDate', field=&lt;django.db.models.fields.DateTimeField&gt;&gt;, &lt;AddField  model_name='question', name='picture', field=&lt;django.db.models.fields.files.ImageField&gt;&gt;, &lt;AddField  model_name='questioninpoll', name='score', field=&lt;django.db.models.fields.SmallIntegerField&gt;&gt;, &lt;AlterField  model_name='questioninpoll', name='poll', field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;, &lt;AlterField  model_name='questioninpoll', name='question', field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0006_auto_20201129_1041.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0007_auto_20201129_1429">
+<span id="polls-migrations-0007-auto-20201129-1429-module"></span><h2>polls.migrations.0007_auto_20201129_1429 module<a class="headerlink" href="#module-polls.migrations.0007_auto_20201129_1429" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0007_auto_20201129_1429.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0007_auto_20201129_1429.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0007_auto_20201129_1429.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0007_auto_20201129_1429.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0006_auto_20201129_1041')]</em><a class="headerlink" href="#polls.migrations.0007_auto_20201129_1429.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0007_auto_20201129_1429.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AlterField  model_name='question', name='picture', field=&lt;django.db.models.fields.files.ImageField&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0007_auto_20201129_1429.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0008_auto_20201129_1432">
+<span id="polls-migrations-0008-auto-20201129-1432-module"></span><h2>polls.migrations.0008_auto_20201129_1432 module<a class="headerlink" href="#module-polls.migrations.0008_auto_20201129_1432" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0008_auto_20201129_1432.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0008_auto_20201129_1432.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0008_auto_20201129_1432.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0008_auto_20201129_1432.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0007_auto_20201129_1429')]</em><a class="headerlink" href="#polls.migrations.0008_auto_20201129_1432.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0008_auto_20201129_1432.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AlterField  model_name='question', name='picture', field=&lt;django.db.models.fields.files.ImageField&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0008_auto_20201129_1432.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0009_answeruser">
+<span id="polls-migrations-0009-answeruser-module"></span><h2>polls.migrations.0009_answeruser module<a class="headerlink" href="#module-polls.migrations.0009_answeruser" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0009_answeruser.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0009_answeruser.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0009_answeruser.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0009_answeruser.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('auth', '__first__'), ('polls', '0008_auto_20201129_1432')]</em><a class="headerlink" href="#polls.migrations.0009_answeruser.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0009_answeruser.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;CreateModel  name='AnswerUser', fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('answer', &lt;django.db.models.fields.related.ForeignKey&gt;), ('owner', &lt;django.db.models.fields.related.ForeignKey&gt;), ('question', &lt;django.db.models.fields.related.ForeignKey&gt;), ('questionPoll', &lt;django.db.models.fields.related.ForeignKey&gt;)]&gt;]</em><a class="headerlink" href="#polls.migrations.0009_answeruser.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0010_answeruser_score">
+<span id="polls-migrations-0010-answeruser-score-module"></span><h2>polls.migrations.0010_answeruser_score module<a class="headerlink" href="#module-polls.migrations.0010_answeruser_score" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0010_answeruser_score.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0010_answeruser_score.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0010_answeruser_score.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0010_answeruser_score.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0009_answeruser')]</em><a class="headerlink" href="#polls.migrations.0010_answeruser_score.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0010_answeruser_score.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AddField  model_name='answeruser', name='score', field=&lt;django.db.models.fields.SmallIntegerField&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0010_answeruser_score.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0011_auto_20201206_1611">
+<span id="polls-migrations-0011-auto-20201206-1611-module"></span><h2>polls.migrations.0011_auto_20201206_1611 module<a class="headerlink" href="#module-polls.migrations.0011_auto_20201206_1611" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0011_auto_20201206_1611.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0011_auto_20201206_1611.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0011_auto_20201206_1611.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0011_auto_20201206_1611.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0010_answeruser_score')]</em><a class="headerlink" href="#polls.migrations.0011_auto_20201206_1611.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0011_auto_20201206_1611.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AlterField  model_name='answeruser', name='question', field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0011_auto_20201206_1611.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0012_answeruser_poll">
+<span id="polls-migrations-0012-answeruser-poll-module"></span><h2>polls.migrations.0012_answeruser_poll module<a class="headerlink" href="#module-polls.migrations.0012_answeruser_poll" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0012_answeruser_poll.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0012_answeruser_poll.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0012_answeruser_poll.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0012_answeruser_poll.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0011_auto_20201206_1611')]</em><a class="headerlink" href="#polls.migrations.0012_answeruser_poll.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0012_answeruser_poll.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AddField  model_name='answeruser', name='poll', field=&lt;django.db.models.fields.related.ForeignKey&gt;, preserve_default=False&gt;]</em><a class="headerlink" href="#polls.migrations.0012_answeruser_poll.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0013_answerpoll">
+<span id="polls-migrations-0013-answerpoll-module"></span><h2>polls.migrations.0013_answerpoll module<a class="headerlink" href="#module-polls.migrations.0013_answerpoll" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0013_answerpoll.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0013_answerpoll.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0013_answerpoll.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0013_answerpoll.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0012_answeruser_poll')]</em><a class="headerlink" href="#polls.migrations.0013_answerpoll.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0013_answerpoll.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;CreateModel  name='AnswerPoll', fields=[('id', &lt;django.db.models.fields.AutoField&gt;), ('score', &lt;django.db.models.fields.SmallIntegerField&gt;), ('answer', &lt;django.db.models.fields.related.ForeignKey&gt;), ('poll', &lt;django.db.models.fields.related.ForeignKey&gt;)]&gt;]</em><a class="headerlink" href="#polls.migrations.0013_answerpoll.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0014_auto_20201213_1653">
+<span id="polls-migrations-0014-auto-20201213-1653-module"></span><h2>polls.migrations.0014_auto_20201213_1653 module<a class="headerlink" href="#module-polls.migrations.0014_auto_20201213_1653" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0014_auto_20201213_1653.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0014_auto_20201213_1653.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0014_auto_20201213_1653.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0014_auto_20201213_1653.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0013_answerpoll')]</em><a class="headerlink" href="#polls.migrations.0014_auto_20201213_1653.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0014_auto_20201213_1653.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AlterModelOptions  name='answer', options={'ordering': ['textAnswer'], 'verbose_name': 'Ответ', 'verbose_name_plural': 'Ответы'}&gt;, &lt;AlterModelOptions  name='answerpoll', options={'verbose_name': 'Ответ в опросах', 'verbose_name_plural': 'Ответы в опросах'}&gt;, &lt;AlterModelOptions  name='answeruser', options={'ordering': ['owner'], 'verbose_name': 'Ответ пользователя', 'verbose_name_plural': 'Ответы пользователя'}&gt;, &lt;AlterModelOptions  name='poll', options={'ordering': ['publicationDate'], 'verbose_name': 'Опрос', 'verbose_name_plural': 'Опросы'}&gt;, &lt;AlterModelOptions  name='question', options={'ordering': ['text'], 'verbose_name': 'Вопрос', 'verbose_name_plural': 'Вопросы'}&gt;, &lt;AlterModelOptions  name='questioninpoll', options={'verbose_name': 'Связь вопроса и опроса', 'verbose_name_plural': 'Связь вопросов с опросами'}&gt;, &lt;RemoveField  model_name='answer', name='rightFlg'&gt;]</em><a class="headerlink" href="#polls.migrations.0014_auto_20201213_1653.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0015_auto_20201216_2004">
+<span id="polls-migrations-0015-auto-20201216-2004-module"></span><h2>polls.migrations.0015_auto_20201216_2004 module<a class="headerlink" href="#module-polls.migrations.0015_auto_20201216_2004" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0015_auto_20201216_2004.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0015_auto_20201216_2004.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0015_auto_20201216_2004.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0015_auto_20201216_2004.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0014_auto_20201213_1653')]</em><a class="headerlink" href="#polls.migrations.0015_auto_20201216_2004.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0015_auto_20201216_2004.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AddField  model_name='poll', name='created_dttm', field=&lt;django.db.models.fields.DateTimeField&gt;, preserve_default=False&gt;, &lt;AddField  model_name='poll', name='update_dttm', field=&lt;django.db.models.fields.DateTimeField&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0015_auto_20201216_2004.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations.0016_auto_20201219_2047">
+<span id="polls-migrations-0016-auto-20201219-2047-module"></span><h2>polls.migrations.0016_auto_20201219_2047 module<a class="headerlink" href="#module-polls.migrations.0016_auto_20201219_2047" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="polls.migrations.0016_auto_20201219_2047.Migration">
+<em class="property">class </em><code class="sig-prename descclassname">polls.migrations.0016_auto_20201219_2047.</code><code class="sig-name descname">Migration</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">app_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.migrations.0016_auto_20201219_2047.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="py attribute">
+<dt id="polls.migrations.0016_auto_20201219_2047.Migration.dependencies">
+<code class="sig-name descname">dependencies</code><em class="property"> = [('polls', '0015_auto_20201216_2004')]</em><a class="headerlink" href="#polls.migrations.0016_auto_20201219_2047.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="polls.migrations.0016_auto_20201219_2047.Migration.operations">
+<code class="sig-name descname">operations</code><em class="property"> = [&lt;AlterField  model_name='question', name='polls', field=&lt;django.db.models.fields.related.ManyToManyField&gt;&gt;]</em><a class="headerlink" href="#polls.migrations.0016_auto_20201219_2047.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-polls.migrations">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-polls.migrations" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Polls</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Содержание:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="test.html">CHAPTER 1 Hello world</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="polls.html">polls package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="polls.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polls.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polls.html#module-polls.admin">polls.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polls.html#module-polls.apps">polls.apps module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polls.html#module-polls.forms">polls.forms module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polls.html#module-polls.models">polls.models module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polls.html#module-polls.tests">polls.tests module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polls.html#module-polls.views">polls.views module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polls.html#module-polls">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="polls.html">polls package</a><ul>
+      <li>Previous: <a href="polls.html" title="previous chapter">polls package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Larisa.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/polls.migrations.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
