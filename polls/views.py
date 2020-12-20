@@ -273,7 +273,7 @@ def user_stat(request):
     cur_score = user_score.filter(owner=request.user)
     # 2.2) баллы в разрезе опросов, дополненны баллами текущего пользователя
     # {'owner': 5, 'poll_id': 1, 'sum_score': 6, 'cur_score': 4}
-    add_cur_sum = user_score.annotate(cur_score=Value(cur_score.get_object_or_404(poll_id=F('poll_id'))['sum_score'], output_field=IntegerField()))
+    add_cur_sum = user_score.annotate(cur_score=Value(cur_score.get(poll_id=F('poll_id'))['sum_score'], output_field=IntegerField()))
     # 2.3) оставляем записи с оценками, больше оценки текущего пользователя
     gt_user_poll = add_cur_sum.filter(sum_score__gt=F('cur_score'))
     if gt_user_poll:
