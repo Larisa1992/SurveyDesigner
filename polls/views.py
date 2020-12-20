@@ -1,6 +1,6 @@
   
 from django.forms import formset_factory, modelformset_factory
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView
 from django.utils import timezone
@@ -97,9 +97,9 @@ class UserStatistics(ListView):
         # добавляем к каждому опросу к-во баллов по текущему пользователю
         # for cur in cur_score:
         # 2)
-        user_score = user_score.annotate(cur_score=Value(cur_score.get(questionPoll__poll=F('questionPoll__poll'))['sum_score'], output_field=IntegerField()))
+        user_score = user_score.annotate(cur_score=Value(cur_score.get_list_or_404(questionPoll__poll=F('questionPoll__poll'))['sum_score'], output_field=IntegerField()))
         # 3) к-во пользователей по каждому опросу
-        user_score = user_score.annotate(count_user=Value(user_score_2.get(questionPoll__poll=F('questionPoll__poll'))['count_user'], output_field=IntegerField()))
+        user_score = user_score.annotate(count_user=Value(user_score_2.get_list_or_404(questionPoll__poll=F('questionPoll__poll'))['count_user'], output_field=IntegerField()))
         # 4) оставляем пользователей с большим количеством баллов
         user_score = user_score.filter(sum_score__gt=F('cur_score'))
         # 5) считаем пользователей с большим количеством баллов
@@ -120,8 +120,8 @@ def answer_ball(request, poll_id, q_id):
     """Страница редактирования баллоы за ответ в рамках одного опроса"""
     template = loader.get_template('answer_poll.html')
     
-    cur_poll = Poll.objects.get(id= int(poll_id))
-    cur_question = Question.objects.get(id= int(q_id))
+    cur_poll = Poll.objects.get_object_or_404(id= int(poll_id))
+    cur_question = Question.objects.get_object_or_404(id= int(q_id))
     ans_poll = AnswerPoll.objects.filter(Q(poll=cur_poll) & Q(answer__question=cur_question))
     content = { "q_title": cur_question.text, 'poll': cur_poll.title, "ans_poll": ans_poll}
     return HttpResponse(template.render(content, request))
@@ -133,7 +133,7 @@ def balls_update(request, an_p_id):
         if not request.POST['an_p_id']:
             return redirect('poll_questions', poll_id=p_id) #poll_questions - название url
         else:
-            an_p = AnswerPoll.objects.get(id=an_p_id)
+            an_p = AnswerPoll.objects.get_object_or_404(id=an_p_id)
             if not an_p:
                 return redirect('admin_poll_list')
             an_p.score = int(request.POST['score'])
@@ -145,10 +145,10 @@ def balls_update(request, an_p_id):
 @login_required
 def balls(request, poll_id):
     r_id = request.POST.get('rowid')
-    cur_poll = Poll.objects.get(id=poll_id)
+    cur_poll = Poll.objects.get_object_or_404(id=poll_id)
     if request.method == 'POST' and request.POST.get('rowid'): #сохраняем баллы за вопрос
         r_id = request.POST.get('rowid')
-        qp = QuestionInPoll.objects.get(id=request.POST['rowid'])
+        qp = QuestionInPoll.objects.get_object_or_404(id=request.POST['rowid'])
         qp.score = int(request.POST['score'])
         qp.save()
         return HttpResponseRedirect(reverse_lazy('poll_questions', kwargs={'poll_id': request.POST['poll_id']} ))
@@ -184,7 +184,7 @@ class QuestionManagerList(ListView):
 @login_required
 def question_edit(request, _id):
     """ редактируем """
-    qObj = Question.objects.get(id=_id)
+    qObj = Question.objects.get_object_or_404(id=_id)
     # fr = book.friend # ссылка на друга по внешнему ключу
     ans_list=Answer.objects.filter(question=_id)
     if request.method != 'POST':
@@ -205,7 +205,7 @@ AnswerFormSet = modelformset_factory(Answer, form=AnswerForm, can_order=True, ca
 @login_required
 def question_answer_create(request, _id):
     """Редактируем ответы на вопросы"""
-    qObj = Question.objects.get(id=_id)
+    qObj = Question.objects.get_object_or_404(id=_id)
     # внешний ключ фильтруем по объекту, а не по ссылке
     answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer} for obj in Answer.objects.filter(question=qObj)]
     if request.method == 'POST':
@@ -232,15 +232,15 @@ def question_answer_create(request, _id):
 @login_required
 def poll_start(request, poll_id):
     """Страница прохождения опроса для пользователя"""
-    cur_poll = Poll.objects.get(id=poll_id)
+    cur_poll = Poll.objects.get_object_or_404(id=poll_id)
     # подтягиваем данные по внешнему ключу question
     questions = QuestionInPoll.objects.filter(poll=poll_id).select_related('question')
     message = ''
     if request.method == 'POST':
         set_ans = set(request.POST.getlist('ans-user')) # ответы пользователя
-        c_qInPoll = QuestionInPoll.objects.get(id=request.POST['q-in-p'])
+        c_qInPoll = QuestionInPoll.objects.get_object_or_404(id=request.POST['q-in-p'])
         if 'q_id' in request.POST:
-            c_question = Question.objects.get(id=request.POST['q_id'])
+            c_question = Question.objects.get_object_or_404(id=request.POST['q_id'])
         else:
             None
 
@@ -254,7 +254,7 @@ def poll_start(request, poll_id):
                 tans = int(tans) # приводим ид ответов пользователя к целому числу
                 n_score = AnswerPoll.objects.filter(answer=tans, poll=poll_id).first() # количество баллов данного ответа в текущем опросе
                 n_score = n_score.score if n_score.score else 0
-                c_answer = Answer.objects.get(id=tans) # ответ пользователя
+                c_answer = Answer.objects.get_object_or_404(id=tans) # ответ пользователя
                 c_ansUser = AnswerUser.objects.create(owner = request.user, questionPoll= c_qInPoll, answer=c_answer, score=n_score, question=c_question, poll=cur_poll)
                 c_ansUser.save()
                 message = 'Ответ успешно сохранен'
@@ -273,7 +273,7 @@ def user_stat(request):
     cur_score = user_score.filter(owner=request.user)
     # 2.2) баллы в разрезе опросов, дополненны баллами текущего пользователя
     # {'owner': 5, 'poll_id': 1, 'sum_score': 6, 'cur_score': 4}
-    add_cur_sum = user_score.annotate(cur_score=Value(cur_score.get(poll_id=F('poll_id'))['sum_score'], output_field=IntegerField()))
+    add_cur_sum = user_score.annotate(cur_score=Value(cur_score.get_object_or_404(poll_id=F('poll_id'))['sum_score'], output_field=IntegerField()))
     # 2.3) оставляем записи с оценками, больше оценки текущего пользователя
     gt_user_poll = add_cur_sum.filter(sum_score__gt=F('cur_score'))
     if gt_user_poll:
@@ -286,7 +286,7 @@ def user_stat(request):
     # 3) количество пользователей по каждому опросу
     distinct_user_poll = user_score.values('poll_id').annotate(count_user=Count('owner', distinct=True))
     # 4) собираем результаты в один набор данных
-    pre_statistics = cur_score.annotate(count_user=Value(distinct_user_poll.get(poll_id=F('poll_id'))['count_user'], output_field=IntegerField())).annotate(gt_count=Value(gt_count.get(poll_id=F('poll_id'))['gt_count'] , output_field=IntegerField()))
+    pre_statistics = cur_score.annotate(count_user=Value(distinct_user_poll.get_object_or_404(poll_id=F('poll_id'))['count_user'], output_field=IntegerField())).annotate(gt_count=Value(gt_count.get_object_or_404(poll_id=F('poll_id'))['gt_count'] , output_field=IntegerField()))
     # >>> print(pre_statistics)
     # <QuerySet [{'owner': 4, 'poll_id': 1, 'sum_score': 4, 'count_user': 2, 'gt_count': 1}]>
     # 6) вычисляем рейтинг
