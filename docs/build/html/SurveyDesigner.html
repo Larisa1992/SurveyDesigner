@@ -39,8 +39,14 @@
 <h2>Описание проекта<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>В проекте изпользуется Django + Postgresql.
 Приложение можно развернуть в Docker контейнере.
-Также, проект выложен на Heroku.
-Подробнее см. в разделе <em>Запуск проекта</em> <a class="reference internal" href="Install.html#id1"><span class="std std-ref">Запуск проекта</span></a></p>
+Также, проект выложен на Heroku. В проекте на Heroku создан супер пользователь, который может создавать и редактировать модели в стандарной панели администратора django.
+Параметры входа для супер пользователя:
+<strong>Пользователь:</strong> admin
+<strong>Пароль:</strong> django
+Параметры входа для тестового пользователя:
+<strong>Пользователь:</strong> TestUser
+<strong>Пароль:</strong> qetrw</p>
+<p>Подробнее см. в разделе <em>Запуск проекта</em> <a class="reference internal" href="Install.html#id1"><span class="std std-ref">Запуск проекта</span></a></p>
 </div>
 <div class="section" id="urls">
 <h2>Urls проекта <strong>Конструктор опросов</strong><a class="headerlink" href="#urls" title="Permalink to this headline">¶</a></h2>
@@ -54,13 +60,13 @@
 <li><p><em>q_edit/&lt;int:_id&gt;/</em> - форма редактирования вопроса (<strong>?delete</strong>)</p></li>
 <li><p><em>q_update/&lt;int:_id&gt;/</em> форма редактирования вопроса с ответами (<strong>?delete</strong>)</p></li>
 <li><p><em>q_list/</em> - список всех вопросов с переходом для редактирования</p></li>
-<li><p><em>question_manage/&lt;int:_id&gt;/</em> -</p></li>
+<li><p><em>question_manage/&lt;int:_id&gt;/</em> - форма редактирования вопроса и ответов на него</p></li>
 <li><p><em>polls/</em> - список опросов</p></li>
 <li><p><em>polls/&lt;int:poll_id&gt;//</em> - Опрос со списком опросов для пользователя</p></li>
 <li><p><em>polls/admin/</em> - список опросов для администратора</p></li>
 <li><p><em>polls/create/</em> - (<strong>?delete</strong>)</p></li>
-<li><p><em>balls/&lt;int:poll_id&gt;/</em> - баллы за вопрос?</p></li>
-<li><p><em>balls/answer/&lt;int:poll_id&gt;/&lt;int:q_id&gt;/</em> - редактирование баллов за ответы в намках определенного опроса</p></li>
+<li><p><em>balls/&lt;int:poll_id&gt;/</em> - страница редактирования опроса, а также список вопросов и ответов. Доступна кнопка для перехода на страницу редактирования баллов за ответы</p></li>
+<li><p><em>balls/answer/&lt;int:poll_id&gt;/&lt;int:q_id&gt;/</em> - редактирование баллов за ответы на вопрос текущего опроса</p></li>
 <li><p><em>balls/update/&lt;int:an_p_id&gt;/</em> - обновляем баллы за вопрос</p></li>
 <li><p><em>statistics/</em> - ответы всех пользователей для администратора приложения</p></li>
 <li><p><em>user/statistics/</em> - Статистика для авторизованного пользователя</p></li>

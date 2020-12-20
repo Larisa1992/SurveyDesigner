@@ -8,6 +8,7 @@
 
 .. _проект: https://github.com/Larisa1992/SurveyDesigner.git
 
+#. Убедитесь, что значение переменной HEROKU в настройках проекта SurveyDesigner\settings.py файле принимает значение **False**: HEROKU = False 
 #. Откройте командную строку и перейдите в папку, где лежит файл *docker-compose.yaml*
 #. Соберите и запустите Docker контейнер командой *docker-compose up -d --build*
 #. Примените миграции командой *docker-compose exec django python manage.py migrate --noinput*

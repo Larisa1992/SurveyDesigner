@@ -235,85 +235,6 @@
 
 </dd></dl>
 
-<dl class="py class">
-<dt id="polls.forms.QuestionForm">
-<em class="property">class </em><code class="sig-prename descclassname">polls.forms.</code><code class="sig-name descname">QuestionForm</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">auto_id='id_%s'</em>, <em class="sig-param">prefix=None</em>, <em class="sig-param">initial=None</em>, <em class="sig-param">error_class=&lt;class 'django.forms.utils.ErrorList'&gt;</em>, <em class="sig-param">label_suffix=None</em>, <em class="sig-param">empty_permitted=False</em>, <em class="sig-param">instance=None</em>, <em class="sig-param">use_required_attribute=None</em>, <em class="sig-param">renderer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#polls.forms.QuestionForm" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py class">
-<dt id="polls.forms.QuestionForm.Meta">
-<em class="property">class </em><code class="sig-name descname">Meta</code><a class="headerlink" href="#polls.forms.QuestionForm.Meta" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt id="polls.forms.QuestionForm.Meta.fields">
-<code class="sig-name descname">fields</code><em class="property"> = '__all__'</em><a class="headerlink" href="#polls.forms.QuestionForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="polls.forms.QuestionForm.Meta.model">
-<code class="sig-name descname">model</code><a class="headerlink" href="#polls.forms.QuestionForm.Meta.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#polls.models.Question" title="polls.models.Question"><code class="xref py py-class docutils literal notranslate"><span class="pre">polls.models.Question</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="polls.forms.QuestionForm.Meta.widgets">
-<code class="sig-name descname">widgets</code><em class="property"> = {'polls': &lt;django.forms.widgets.CheckboxSelectMultiple object&gt;, 'text': &lt;django.forms.widgets.TextInput object&gt;}</em><a class="headerlink" href="#polls.forms.QuestionForm.Meta.widgets" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="polls.forms.QuestionForm.base_fields">
-<code class="sig-name descname">base_fields</code><em class="property"> = {'picture': &lt;django.forms.fields.ImageField object&gt;, 'polls': &lt;django.forms.models.ModelMultipleChoiceField object&gt;, 'text': &lt;django.forms.fields.CharField object&gt;, 'timer': &lt;django.forms.fields.IntegerField object&gt;, 'typeQuestion': &lt;django.forms.fields.TypedChoiceField object&gt;}</em><a class="headerlink" href="#polls.forms.QuestionForm.base_fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="polls.forms.QuestionForm.declared_fields">
-<code class="sig-name descname">declared_fields</code><em class="property"> = {}</em><a class="headerlink" href="#polls.forms.QuestionForm.declared_fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polls.forms.QuestionForm.media">
-<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#polls.forms.QuestionForm.media" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return all media required to render the widgets on this form.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="polls.forms.QuestionInPollForm">
-<em class="property">class </em><code class="sig-prename descclassname">polls.forms.</code><code class="sig-name descname">QuestionInPollForm</code><span class="sig-paren">(</span><em class="sig-param">data=None</em>, <em class="sig-param">files=None</em>, <em class="sig-param">auto_id='id_%s'</em>, <em class="sig-param">prefix=None</em>, <em class="sig-param">initial=None</em>, <em class="sig-param">error_class=&lt;class 'django.forms.utils.ErrorList'&gt;</em>, <em class="sig-param">label_suffix=None</em>, <em class="sig-param">empty_permitted=False</em>, <em class="sig-param">instance=None</em>, <em class="sig-param">use_required_attribute=None</em>, <em class="sig-param">renderer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#polls.forms.QuestionInPollForm" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py class">
-<dt id="polls.forms.QuestionInPollForm.Meta">
-<em class="property">class </em><code class="sig-name descname">Meta</code><a class="headerlink" href="#polls.forms.QuestionInPollForm.Meta" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt id="polls.forms.QuestionInPollForm.Meta.fields">
-<code class="sig-name descname">fields</code><em class="property"> = ('question', 'score')</em><a class="headerlink" href="#polls.forms.QuestionInPollForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="polls.forms.QuestionInPollForm.Meta.model">
-<code class="sig-name descname">model</code><a class="headerlink" href="#polls.forms.QuestionInPollForm.Meta.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#polls.models.QuestionInPoll" title="polls.models.QuestionInPoll"><code class="xref py py-class docutils literal notranslate"><span class="pre">polls.models.QuestionInPoll</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="polls.forms.QuestionInPollForm.base_fields">
-<code class="sig-name descname">base_fields</code><em class="property"> = {'question': &lt;django.forms.models.ModelChoiceField object&gt;, 'score': &lt;django.forms.fields.IntegerField object&gt;}</em><a class="headerlink" href="#polls.forms.QuestionInPollForm.base_fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="polls.forms.QuestionInPollForm.declared_fields">
-<code class="sig-name descname">declared_fields</code><em class="property"> = {}</em><a class="headerlink" href="#polls.forms.QuestionInPollForm.declared_fields" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="polls.forms.QuestionInPollForm.media">
-<em class="property">property </em><code class="sig-name descname">media</code><a class="headerlink" href="#polls.forms.QuestionInPollForm.media" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return all media required to render the widgets on this form.</p>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 <div class="section" id="module-polls.models">
 <span id="polls"></span><h2>Модели polls (объекты БД)<a class="headerlink" href="#module-polls.models" title="Permalink to this headline">¶</a></h2>
@@ -709,7 +630,7 @@
 <dl class="py attribute">
 <dt id="polls.views.QuestionCreateView.form_class">
 <code class="sig-name descname">form_class</code><a class="headerlink" href="#polls.views.QuestionCreateView.form_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#polls.forms.QuestionForm" title="polls.forms.QuestionForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">polls.forms.QuestionForm</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="#polls.forms.QuestionEditForm" title="polls.forms.QuestionEditForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">polls.forms.QuestionEditForm</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -720,34 +641,6 @@
 <dl class="py attribute">
 <dt id="polls.views.QuestionCreateView.template_name">
 <code class="sig-name descname">template_name</code><em class="property"> = 'question_create.html'</em><a class="headerlink" href="#polls.views.QuestionCreateView.template_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="polls.views.QuestionEditview">
-<em class="property">class </em><code class="sig-prename descclassname">polls.views.</code><code class="sig-name descname">QuestionEditview</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.views.QuestionEditview" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
-<dt id="polls.views.QuestionEditview.form_class">
-<code class="sig-name descname">form_class</code><a class="headerlink" href="#polls.views.QuestionEditview.form_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#polls.forms.QuestionEditForm" title="polls.forms.QuestionEditForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">polls.forms.QuestionEditForm</span></code></a></p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="polls.views.QuestionEditview.get_context_data">
-<code class="sig-name descname">get_context_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.views.QuestionEditview.get_context_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert the form into the context dict.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="polls.views.QuestionEditview.model">
-<code class="sig-name descname">model</code><a class="headerlink" href="#polls.views.QuestionEditview.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#polls.models.Question" title="polls.models.Question"><code class="xref py py-class docutils literal notranslate"><span class="pre">polls.models.Question</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="polls.views.QuestionEditview.template_name">
-<code class="sig-name descname">template_name</code><em class="property"> = 'question_edit.html'</em><a class="headerlink" href="#polls.views.QuestionEditview.template_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -855,11 +748,6 @@
 <code class="sig-prename descclassname">polls.views.</code><code class="sig-name descname">poll_start</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em>, <em class="sig-param"><span class="n">poll_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.views.poll_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Страница прохождения опроса для пользователя</p>
 </dd></dl>
-
-<dl class="py function">
-<dt id="polls.views.q_form">
-<code class="sig-prename descclassname">polls.views.</code><code class="sig-name descname">q_form</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#polls.views.q_form" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py function">
 <dt id="polls.views.question_answer_create">
