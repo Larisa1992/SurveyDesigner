@@ -15,7 +15,7 @@ from django.template import loader
 from datetime import datetime
 from polls.models import Question, Poll, Answer, QuestionInPoll, AnswerUser, AnswerPoll
 from polls.forms import QuestionEditForm, AnswerForm, AnswerUserForm, PollForm, AnswerPollForm
-from SurveyDesigner.settings import DATABASES
+
 
 def index(request):
     """Главная страница с описанием проекта"""
@@ -117,7 +117,7 @@ AnswerPollFormSet = modelformset_factory(AnswerPoll, form=AnswerPollForm, can_or
 
 @login_required
 def answer_ball(request, poll_id, q_id):
-    """Страница редактирования баллоы за ответ в рамках одного опроса"""
+    """Страница редактирования баллов за ответ в рамках одного опроса"""
     template = loader.get_template('answer_poll.html')
     cur_poll = get_object_or_404(Poll, id=int(poll_id))
     cur_question = get_object_or_404(Question, id= int(q_id))
@@ -203,19 +203,27 @@ AnswerFormSet = modelformset_factory(Answer, form=AnswerForm, can_order=True, ca
 
 @login_required
 def question_answer_create(request, _id):
-    """Редактируем ответы на вопросы"""
+    """Редактируем ответы на вопросы - обновление ответов не предусмотрено.
+    При создании ответа, дополнительно создаются записи в таблице AnswerPoll (ответы в опросах).
+    """
     qObj = get_object_or_404(Question, id=_id)
     # внешний ключ фильтруем по объекту, а не по ссылке
     answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer} for obj in Answer.objects.filter(question=qObj)]
     if request.method == 'POST':
         answer_formset = AnswerFormSet(request.POST, request.FILES, prefix='answer', queryset=Answer.objects.filter(question=qObj))
-        form = QuestionEditForm(instance=qObj, data = request.POST)
+        form = QuestionEditForm(instance=qObj, data = request.POST)       
+        curr_polls_id = form.data.getlist('polls')
 
         if answer_formset.is_valid() and form.is_valid():
             answer_formset.save(commit=False)
             for ans in answer_formset.new_objects:
                 ans.question = qObj
                 ans.save()
+                # создаем ответ для опроса, если такого не существует
+                for poll_id in curr_polls_id:
+                    # print(get_object_or_404(Poll,id=poll_id))               
+                    curr_answer_poll= AnswerPoll.objects.create(answer=ans, poll=get_object_or_404(Poll,id=poll_id))
+                    curr_answer_poll.save()
             answer_formset.save(commit=True)
             for answer_form in answer_formset.deleted_objects: #отфильтровать только заполненные формы
                 answer_form.save()
