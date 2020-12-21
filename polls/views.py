@@ -211,7 +211,8 @@ def question_answer_create(request, _id):
     answer_list=[ {'ans_id': obj.id ,'question': obj.question, 'textAnswer': obj.textAnswer} for obj in Answer.objects.filter(question=qObj)]
     if request.method == 'POST':
         answer_formset = AnswerFormSet(request.POST, request.FILES, prefix='answer', queryset=Answer.objects.filter(question=qObj))
-        form = QuestionEditForm(instance=qObj, data = request.POST)       
+        form = QuestionEditForm(instance=qObj, data = request.POST, files=request.FILES)  
+
         curr_polls_id = form.data.getlist('polls')
 
         if answer_formset.is_valid() and form.is_valid():
