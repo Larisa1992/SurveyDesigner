@@ -10,10 +10,8 @@
     <h5 class="shadow-sm p-3 mb-5 bg-white rounded col-sm-8">Вопросы:</h5>
     <div class="list-group col-sm-8"> 
         {% for question in object_list %}
-                <!-- <a class="text-info" href="{% url 'question_edit' question.id %}">Редактировать</a> -->
-
-                <a class="list-group-item list-group-item-action list-group-item-secondary stretched-link" href="{% url 'question_answer_create' question.id %}">{{ question.text }} (Редактировать)</a>
-
+            <a class="list-group-item list-group-item-action list-group-item-secondary stretched-link" href="{% url 'question_answer_create' question.id %}">
+                {{ question.text }} (Редактировать)</a>
         {% endfor %}
     </div>
     <a href="{% url 'q_create' %}" class="btn btn-primary btn-lg">Создать вопрос</a>

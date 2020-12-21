@@ -220,8 +220,7 @@ def question_answer_create(request, _id):
                 ans.question = qObj
                 ans.save()
                 # создаем ответ для опроса, если такого не существует
-                for poll_id in curr_polls_id:
-                    # print(get_object_or_404(Poll,id=poll_id))               
+                for poll_id in curr_polls_id:              
                     curr_answer_poll= AnswerPoll.objects.create(answer=ans, poll=get_object_or_404(Poll,id=poll_id))
                     curr_answer_poll.save()
             answer_formset.save(commit=True)

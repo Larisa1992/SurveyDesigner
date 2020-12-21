@@ -9,7 +9,7 @@
 {% endblock page_header %}
 
 {% block content %}
-    <form action="{% url 'question_answer_create' qObj.id %}" method="post">
+    <form action="{% url 'question_answer_create' qObj.id %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ question_form.as_p }}
 
