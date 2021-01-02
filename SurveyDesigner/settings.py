@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+from django.urls import reverse_lazy
 import os
 # heroku
 import dj_database_url
@@ -24,6 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+LOGIN_REDIRECT_URL=reverse_lazy('index')
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 
@@ -34,12 +37,13 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'localhost', 'rocky-tundra-10357.herokuapp.com']
 
 DOCKER = False
-HEROKU = True
-# HEROKU = False
+# HEROKU = True
+HEROKU = False
 # Application definition
 
 INSTALLED_APPS = [
     'bootstrap4',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,6 +54,8 @@ INSTALLED_APPS = [
     'polls.apps.PollsConfig',
     'users',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -132,7 +138,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 

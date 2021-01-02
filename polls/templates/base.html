@@ -13,6 +13,7 @@
 
 <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+        <a class="navbar-brand" href="{% url 'index' %}">Главная</a>
         {% if user.username == 'admin' %}
             <a class="navbar-brand" href="{% url 'admin_poll_list' %}">Опросы</a>
             <a class="navbar-brand" href="{% url 'q_list' %}">Вопросы</a>

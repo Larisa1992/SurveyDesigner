@@ -13,7 +13,7 @@
     {% elif user.is_authenticated %}
         <p class="lead">
             <span class="font-weight-bolder">{{ user.username }}</span>, добро пожаловать на сервис прохождения опросов!
-            <br />На <a class="navbar-brand" href="{% url 'poll_list' %}">странице опросов</a> вы можете ознакомиться с перечнем актуальных опросов и наать проходить один из них.
+            <br />На <a class="navbar-brand" href="{% url 'poll_list' %}">странице опросов</a> вы можете ознакомиться с перечнем актуальных опросов и начать проходить один из них.
         </p>
     {% else %}
     <p class="lead">
@@ -27,4 +27,6 @@
         <a class="btn btn-lg btn-primary" href="{%url 'users:register' %}" role="button">Зарегистрироваться &raquo;</a>
     {% endif %}
 </div>
+<a class="btn btn-secondary" href="{%url 'users:password_change' %}">Сменить пароль</a>
+<a class="btn btn-secondary" href="{%url 'users:password_reset' %}">Сбросить пароль</a>
 {% endblock page_header %}

@@ -11,7 +11,7 @@
         {% csrf_token %}
         {% bootstrap_form user_form %}
         {% buttons %}
-            <button name="submit" class="btn btn-primary">Register</button>
+            <button name="submit" class="btn btn-primary">Зарегистрироваться</button>
         {% endbuttons %}
 
         <input type="hidden" name="next" value="{% url 'users:login' %}" />
